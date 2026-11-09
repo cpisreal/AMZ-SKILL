@@ -1,0 +1,4 @@
+interface:
+  display_name: "Amazon Listing 标题改写"
+  short_description: "按亚马逊 2026 新规改写并校验 Listing 标题"
+  default_prompt: "使用 $amazon-listing-title-rewriter 根据这个 Listing 页面改写合规标题。"

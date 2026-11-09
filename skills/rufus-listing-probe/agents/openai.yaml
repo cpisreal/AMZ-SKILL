@@ -1,0 +1,3 @@
+interface:
+  display_name: "Rufus Listing Probe"
+  short_description: "Generate high-value Rufus questions for Amazon listing optimization"

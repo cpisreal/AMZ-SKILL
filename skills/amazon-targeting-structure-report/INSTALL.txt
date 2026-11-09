@@ -1,0 +1,42 @@
+Amazon Targeting 结构分析 Skill 包（桌面版）
+============================================
+
+内容
+----
+- SKILL.md：Cursor Agent 说明（请按下方路径安装后才会被加载）
+- scripts/run_targeting_structure_report.py：命令行一键跑报告
+
+安装到 Cursor
+------------
+将本文件夹整体复制到：
+
+  ~/.cursor/skills/amazon-targeting-structure-report/
+
+即最终路径示例：
+
+  ~/.cursor/skills/amazon-targeting-structure-report/SKILL.md
+  ~/.cursor/skills/amazon-targeting-structure-report/scripts/run_targeting_structure_report.py
+
+注意：不要放进 ~/.cursor/skills-cursor/（该目录为 Cursor 内置保留）。
+
+依赖
+----
+  pip install pandas numpy openpyxl
+
+命令行示例
+----------
+python scripts/run_targeting_structure_report.py \
+  --advertised-product "/path/Sponsored_Products_Advertised_product_report.xlsx" \
+  --targeting "/path/Sponsored_Products_Targeting_report.xlsx" \
+  --asin B0784TGH4M \
+  --target-acos 0.15 \
+  --avg-clicks-per-order 7 \
+  --out-dir "/path/output"
+
+多 ASIN：重复写 --asin B0XXX --asin B0YYY
+
+输出
+----
+- report_{首个ASIN}_{日期}.md
+- targeting_labels_{首个ASIN}_{日期}.csv
+- 终端打印样式文本报告

@@ -1,0 +1,36 @@
+{
+  "name": "demo_winter_coat",
+  "label": "演示品类 Winter Coat（demo 专用）",
+  "_说明": "demo 数据的属性包；真实使用时换成你自己品类的词根。",
+  "must_terms": ["winter", "coat"],
+  "attributes": {
+    "人群": {
+      "womens": ["womens"],
+      "men": ["men"],
+      "kids": ["kids"],
+      "baby": ["baby"]
+    },
+    "款式": {
+      "puffer": ["puffer"],
+      "parka": ["parka"],
+      "long": ["long"],
+      "hooded": ["hooded"]
+    },
+    "材质": {
+      "wool": ["wool"],
+      "down": ["down"],
+      "fleece": ["fleece"]
+    },
+    "场景": {
+      "ski": ["ski"],
+      "travel": ["travel"]
+    },
+    "送礼": {
+      "gift": ["gift", "gifts"]
+    },
+    "促销": {
+      "deal": ["deal"],
+      "sale": ["sale"]
+    }
+  }
+}

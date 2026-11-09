@@ -1,0 +1,137 @@
+{
+  "_说明": "万圣节季节规则包。换季节 = 复制这个文件改 roots / products，代码不用动。",
+  "_顺序铁律": "① subclass_guards 先过 ② ambiguity 再剔 ③ products 按顺序首个命中生效 —— 所以越具体的产品要排得越靠前。",
+
+  "name": "halloween",
+  "label": "万圣节 Halloween",
+
+  "roots": ["halloween", "trick or treat"],
+
+  "_roots说明": "刻意只收这两个。'spooky' / 'haunted' / 'pumpkin' 都不做词根 —— haunted house、pumpkin 全年都在用，收进来会把非万圣节的量灌进大盘（这就是圣诞案例里 'men' 命中 'women' 的同类错误，只是换了形态）。两个词根都 >= 6 字符 → 默认只查左边界，保住 halloweencostume 这类连写词。",
+
+  "_subclass_guards说明": "含 halloween 但根本不是商品的一类词，先整条摘出去，免得被某个产品吃掉（≈ 圣诞包里的 tree skirt）",
+  "subclass_guards": [
+    "movie", "movies", "blu ray", "dvd", "soundtrack", "michael myers",
+    "spirit halloween"
+  ],
+
+  "_ambiguity说明": "同形异义：词里带着万圣节关键词，但主体其实是另一个品类（护肤 / 食品饮料 / 绿植 / 电子）。不剔掉会让某个产品的量级虚高。⚠️ ambiguity 是「一票否决」——只要命中就整条丢，所以这里只放**几乎不可能出现在正当商品词里**的冲突；能用「收窄 match 关键词」解决的，就别加到这里（例如 bat/bath 是用 ` bat ` 这种带空格的键解决的，不是靠 guard）。",
+  "ambiguity": [
+    "witch hazel",
+    "ghost pepper",
+    "ghost energy",
+    "spider plant",
+    "skull candy",
+    "skullcandy",
+    "battery",
+    "pumpkin spice",
+    "pumpkin seed",
+    "pumpkin puree",
+    "pumpkin pie",
+    "pumpkin latte"
+  ],
+
+  "_products说明": "match 里的关键词用「包含」匹配（与词根边界不同，产品名不做边界，因为要考虑 stocking/stockings 等形态）。subclasses 用于子类下钻。",
+  "products": [
+    {
+      "name": "讨糖装备",
+      "_note": "🔴 必须排最前：`trick or treat bag` 里同时有 treat 和 bag，排后面会被「糖果零食」或「包装袋盒」吃掉。桶/袋本身是独立品类，跟里面的糖不是一门生意 —— 这就是圣诞包里「袜内填充礼物」那条铁律的同构版本。",
+      "match": ["trick or treat", "candy bucket", "candy pail", "candy bag", "treat bag", "treat bucket", "treat pail", "treat tote"],
+      "subclasses": ["bucket", "pail", "bag", "tote", "basket", "felt", "plastic", "personalized", "light up"]
+    },
+    {
+      "name": "宠物装扮",
+      "_note": "🔴 必须排在「服装装扮」之前：`halloween dog costume` 里既有 dog costume 也有 costume；宠物品类是自己的供应链（尺码/版型完全不同），不该被人的 costume 吃掉。另外刻意用「双词键」而不是裸 'dog'/'cat' —— 裸 cat 会把 `halloween cat decor`（猫形装饰）错划进来。",
+      "match": ["dog costume", "cat costume", "pet costume", "costume for dog", "costume for cat", "costume for pet", "dog bandana", "pet bandana", "dog toy", "cat toy", "pet toy", "dog hat", "cat hat", "dog bow tie", "dog collar", "dog outfit", "cat outfit", "dog shirt", "pet shirt"],
+      "subclasses": []
+    },
+    {
+      "name": "服装装扮",
+      "_note": "只收「只在那天穿」的装扮（costume / cosplay / 翅膀 / 假发 / 巫师帽）。⚠️ 日常能穿的服饰（t shirt / 毛衣 / 袜子 / 帽子）刻意**不放这里** —— 一放，宽泛的 'shirt' 会把整条「服饰配件」吃空，那个品类就永远查不出来。这正是 christmas 包里 stocking 吃掉 stocking stuffers 的同一个坑。",
+      "match": ["costume", "cosplay", "outfit", "dress", "onesie", "wig", "cape", "robe", "wings", "cat ears", "headband", "headpiece", "jumpsuit", "petticoat", "bodysuit", "witch hat", "wizard hat"],
+      "subclasses": ["women", "men", "kids", "toddler", "baby", "girls", "boys", "adult", "plus size", "couple", "group", "family", "inflat", "pet", "dog", "cat", "pirate", "witch", "vampire", "zombie", "skeleton", "angel", "devil"]
+    },
+    {
+      "name": "面具彩妆",
+      "match": ["mask", "masks", "makeup", "face paint", "fake blood", "tattoo", "contact lens", "fangs", "teeth", "false lashes", "nail"],
+      "subclasses": ["scary", "led", "light up", "latex", "kids", "animal", "glitter"]
+    },
+    {
+      "name": "南瓜",
+      "_note": "ambiguity 已把 pumpkin spice / seed / puree / pie 剔掉，剩下的基本是南瓜本体与南瓜周边。",
+      "match": ["pumpkin"],
+      "subclasses": ["carving", "carving kit", "fake", "artificial", "stackable", "led", "light", "large", "small", "outdoor", "paint", "foam"]
+    },
+    { "name": "骷髅骨架", "match": ["skull", "skeleton", "bones", "reaper", "grim"], "subclasses": [] },
+    {
+      "name": "幽灵鬼怪",
+      "_note": "'spirit' 会撞上零售商名 Spirit Halloween —— 已在 subclass_guards 里整条摘掉。",
+      "match": ["ghost", "spirit", "phantom", "zombie", "mummy", "vampire", "werewolf", "gargoyle"],
+      "subclasses": []
+    },
+    {
+      "name": "蜘蛛蝙蝠",
+      "_note": "🔴 不用裸 'bat' —— 那会命中 `bath bombs` / `bathtub`。这里用 ` bat `（前后带空格）与 'bats' 两个键：`halloween bat decorations` 命中，`halloween bath bombs` 不命中。同一条原理就是口径①的 men / women。",
+      "match": ["spider", "cobweb", "spider web", "bats", " bat ", "bat decor", "bat decoration", "hanging bat"],
+      "subclasses": []
+    },
+    { "name": "女巫魔法", "match": ["witch", "witches", "cauldron", "potion", "broom", "wand", "magic"], "subclasses": [] },
+    { "name": "庭院充气装饰", "match": ["inflatable", "yard", "outdoor", "stake", "pathway", "lawn", "porch", "graveyard"], "subclasses": [] },
+    {
+      "name": "灯饰",
+      "match": ["light", "lights", "lighting", "led", "lantern", "projector", "string light", "curtain light", "candle", "flameless", "tealight"],
+      "subclasses": ["string", "projector", "solar", "led", "curtain", "strobe", "purple", "orange", "flickering"]
+    },
+    { "name": "花环藤蔓", "match": ["wreath", "garland", "swag", "vine"], "subclasses": [] },
+    {
+      "name": "餐桌派对",
+      "match": ["plate", "plates", "napkin", "cup", "cups", "tablecloth", "table runner", "banner", "balloon", "streamer", "confetti", "party", "photo booth", "cutlery", "straw", "cake topper", "centerpiece", "backdrop", "treat box", "favor"],
+      "subclasses": []
+    },
+    { "name": "家居布艺", "match": ["pillow", "blanket", "throw", "rug", "doormat", "towel", "tablecloth", "coaster", "mug", "tumbler", "placemat", "shower curtain"], "subclasses": [] },
+    { "name": "珠宝配饰", "match": ["earring", "earrings", "necklace", "bracelet", "ring", "pin", "brooch", "jewelry", "hair clip", "claw clip", "bows"], "subclasses": [] },
+    {
+      "name": "服饰配件",
+      "_note": "这里放「日常能穿」的服饰，跟「只在那天穿的 costume」分开 —— 这两类备货节奏完全不同。",
+      "match": ["socks", "scarf", "gloves", "hat", "hats", "shirt", "t shirt", "tshirt", "sweater", "sweatshirt", "hoodie", "pajama", "leggings", "tights", "bandana", "bow tie", "tutu"],
+      "subclasses": []
+    },
+    { "name": "糖果零食", "match": ["candy", "chocolate", "lollipop", "gummy", "gummies", "marshmallow", "cookie", "cupcake", "treats", "snack", "candy corn", "gum"], "subclasses": [] },
+    { "name": "玩具游戏", "match": ["toy", "toys", "puzzle", "game", "plush", "figurine", "lego", "squishmallow", "fidget", "squishy"], "subclasses": [] },
+    { "name": "包装袋盒", "match": ["gift bag", "gift box", "wrapping", "gift wrap", "tote", "paper bag", "goodie bag", "favor bag"], "subclasses": [] },
+    { "name": "贺卡文具", "match": ["card", "cards", "sticker", "stickers", "pencil", "notebook", "stationery", "temporary tattoo"], "subclasses": [] },
+    { "name": "装饰（泛）", "match": ["decor", "decoration", "decorations", "sign", "signs", "figurine set", "hanging"], "subclasses": [] }
+  ],
+
+  "_root_probes": [
+    "halloween",
+    "halloween decor",
+    "halloweencostume",
+    "halloweendecor",
+    "ahalloween",
+    "trick or treat bag",
+    "trick-or-treat basket",
+    "trickortreat"
+  ],
+  "_explain_note": "注意：`halloween bath bombs` 不是被产品规则挡掉的 —— 它压根没命中任何产品键（可以自己往 products 里加一条）。被**闸门**挡掉的是 `halloween movie blu ray`（子类守卫）和 `halloween pumpkin spice latte`（同形异义）。",
+  "_explain_samples": [
+    "halloween costume",
+    "halloween witch costume",
+    "trick or treat bucket",
+    "halloween candy bucket",
+    "halloween dog costume",
+    "halloween bat decorations",
+    "halloween bath bombs",
+    "halloween pumpkin decor",
+    "halloween movie blu ray",
+    "halloween witch hazel toner",
+    "halloween pumpkin spice latte",
+    "halloweencostume"
+  ],
+  "_boundary_compare": [
+    "halloweencostume",
+    "halloweendecor",
+    "halloween costume",
+    "halloweencandybowl"
+  ]
+}

@@ -1,0 +1,5 @@
+interface:
+  display_name: Rufus Listing Answer Auditor
+  short_description: Audit Amazon listings for Rufus-style question-answer readiness.
+  icon: assets/icon.svg
+  color: '#FF9900'

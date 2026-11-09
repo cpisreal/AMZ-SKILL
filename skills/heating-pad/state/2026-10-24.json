@@ -1,0 +1,659 @@
+{
+  "generated_at": "2026-10-24T09:39:25+08:00",
+  "market": "US",
+  "source": "open-meteo.com",
+  "date": "2026-10-24",
+  "window_days": 7,
+  "window_start": "2026-10-24",
+  "season": {
+    "weeks_to_cold_peak": 13.0,
+    "peak_months": [
+      1
+    ],
+    "peak_label": "1 月（年度最冷月）",
+    "method": "12 城气候常年值加权中位相位 + 全年最冷月推算"
+  },
+  "units": {
+    "snow": "inch",
+    "temperature": "fahrenheit"
+  },
+  "thresholds": {
+    "snow_any_in": 0.1,
+    "cold_burst_f": 20.0,
+    "drop_alert_f": 5.0,
+    "warm_back_f": 10.0
+  },
+  "cities": [
+    {
+      "city": "New York",
+      "state": "NY",
+      "tz": "America/New_York",
+      "days": [
+        {
+          "date": "2026-10-25",
+          "snow_in": 0.0,
+          "tmin_f": 39.3
+        },
+        {
+          "date": "2026-10-26",
+          "snow_in": 0.0,
+          "tmin_f": 52.2
+        },
+        {
+          "date": "2026-10-27",
+          "snow_in": 0.0,
+          "tmin_f": 50.4
+        },
+        {
+          "date": "2026-10-28",
+          "snow_in": 0.0,
+          "tmin_f": 44.8
+        },
+        {
+          "date": "2026-10-29",
+          "snow_in": 0.0,
+          "tmin_f": 50.0
+        },
+        {
+          "date": "2026-10-30",
+          "snow_in": 0.0,
+          "tmin_f": 53.0
+        }
+      ],
+      "snow_total_in": 0.0,
+      "tmin_7d_f": 38.5,
+      "snow_days": [],
+      "snow_peak_in": 0.0
+    },
+    {
+      "city": "Chicago",
+      "state": "IL",
+      "tz": "America/Chicago",
+      "days": [
+        {
+          "date": "2026-10-25",
+          "snow_in": 0.0,
+          "tmin_f": 51.2
+        },
+        {
+          "date": "2026-10-26",
+          "snow_in": 0.0,
+          "tmin_f": 55.2
+        },
+        {
+          "date": "2026-10-27",
+          "snow_in": 0.0,
+          "tmin_f": 54.1
+        },
+        {
+          "date": "2026-10-28",
+          "snow_in": 0.0,
+          "tmin_f": 57.5
+        },
+        {
+          "date": "2026-10-29",
+          "snow_in": 0.0,
+          "tmin_f": 62.5
+        },
+        {
+          "date": "2026-10-30",
+          "snow_in": 0.0,
+          "tmin_f": 61.4
+        }
+      ],
+      "snow_total_in": 0.0,
+      "tmin_7d_f": 45.0,
+      "snow_days": [],
+      "snow_peak_in": 0.0
+    },
+    {
+      "city": "Denver",
+      "state": "CO",
+      "tz": "America/Denver",
+      "days": [
+        {
+          "date": "2026-10-25",
+          "snow_in": 0.0,
+          "tmin_f": 40.5
+        },
+        {
+          "date": "2026-10-26",
+          "snow_in": 0.0,
+          "tmin_f": 48.8
+        },
+        {
+          "date": "2026-10-27",
+          "snow_in": 0.0,
+          "tmin_f": 48.6
+        },
+        {
+          "date": "2026-10-28",
+          "snow_in": 0.0,
+          "tmin_f": 50.8
+        },
+        {
+          "date": "2026-10-29",
+          "snow_in": 0.0,
+          "tmin_f": 54.4
+        },
+        {
+          "date": "2026-10-30",
+          "snow_in": 0.0,
+          "tmin_f": 52.6
+        }
+      ],
+      "snow_total_in": 0.0,
+      "tmin_7d_f": 40.5,
+      "snow_days": [],
+      "snow_peak_in": 0.0
+    },
+    {
+      "city": "Minneapolis",
+      "state": "MN",
+      "tz": "America/Chicago",
+      "days": [
+        {
+          "date": "2026-10-25",
+          "snow_in": 0.0,
+          "tmin_f": 40.0
+        },
+        {
+          "date": "2026-10-26",
+          "snow_in": 0.0,
+          "tmin_f": 43.5
+        },
+        {
+          "date": "2026-10-27",
+          "snow_in": 0.0,
+          "tmin_f": 44.9
+        },
+        {
+          "date": "2026-10-28",
+          "snow_in": 0.0,
+          "tmin_f": 55.3
+        },
+        {
+          "date": "2026-10-29",
+          "snow_in": 0.0,
+          "tmin_f": 50.2
+        },
+        {
+          "date": "2026-10-30",
+          "snow_in": 0.0,
+          "tmin_f": 50.2
+        }
+      ],
+      "snow_total_in": 0.0,
+      "tmin_7d_f": 40.0,
+      "snow_days": [],
+      "snow_peak_in": 0.0
+    },
+    {
+      "city": "Boston",
+      "state": "MA",
+      "tz": "America/New_York",
+      "days": [
+        {
+          "date": "2026-10-25",
+          "snow_in": 0.0,
+          "tmin_f": 35.4
+        },
+        {
+          "date": "2026-10-26",
+          "snow_in": 0.0,
+          "tmin_f": 47.3
+        },
+        {
+          "date": "2026-10-27",
+          "snow_in": 0.0,
+          "tmin_f": 44.6
+        },
+        {
+          "date": "2026-10-28",
+          "snow_in": 0.0,
+          "tmin_f": 39.3
+        },
+        {
+          "date": "2026-10-29",
+          "snow_in": 0.0,
+          "tmin_f": 42.2
+        },
+        {
+          "date": "2026-10-30",
+          "snow_in": 0.0,
+          "tmin_f": 47.7
+        }
+      ],
+      "snow_total_in": 0.0,
+      "tmin_7d_f": 33.4,
+      "snow_days": [],
+      "snow_peak_in": 0.0
+    },
+    {
+      "city": "Detroit",
+      "state": "MI",
+      "tz": "America/Detroit",
+      "days": [
+        {
+          "date": "2026-10-25",
+          "snow_in": 0.0,
+          "tmin_f": 41.0
+        },
+        {
+          "date": "2026-10-26",
+          "snow_in": 0.0,
+          "tmin_f": 53.4
+        },
+        {
+          "date": "2026-10-27",
+          "snow_in": 0.0,
+          "tmin_f": 49.2
+        },
+        {
+          "date": "2026-10-28",
+          "snow_in": 0.0,
+          "tmin_f": 51.5
+        },
+        {
+          "date": "2026-10-29",
+          "snow_in": 0.0,
+          "tmin_f": 52.8
+        },
+        {
+          "date": "2026-10-30",
+          "snow_in": 0.0,
+          "tmin_f": 59.1
+        }
+      ],
+      "snow_total_in": 0.0,
+      "tmin_7d_f": 41.0,
+      "snow_days": [],
+      "snow_peak_in": 0.0
+    },
+    {
+      "city": "Cleveland",
+      "state": "OH",
+      "tz": "America/New_York",
+      "days": [
+        {
+          "date": "2026-10-25",
+          "snow_in": 0.0,
+          "tmin_f": 45.8
+        },
+        {
+          "date": "2026-10-26",
+          "snow_in": 0.0,
+          "tmin_f": 54.4
+        },
+        {
+          "date": "2026-10-27",
+          "snow_in": 0.0,
+          "tmin_f": 51.4
+        },
+        {
+          "date": "2026-10-28",
+          "snow_in": 0.0,
+          "tmin_f": 49.4
+        },
+        {
+          "date": "2026-10-29",
+          "snow_in": 0.0,
+          "tmin_f": 52.7
+        },
+        {
+          "date": "2026-10-30",
+          "snow_in": 0.0,
+          "tmin_f": 60.7
+        }
+      ],
+      "snow_total_in": 0.0,
+      "tmin_7d_f": 41.7,
+      "snow_days": [],
+      "snow_peak_in": 0.0
+    },
+    {
+      "city": "Pittsburgh",
+      "state": "PA",
+      "tz": "America/New_York",
+      "days": [
+        {
+          "date": "2026-10-25",
+          "snow_in": 0.0,
+          "tmin_f": 39.0
+        },
+        {
+          "date": "2026-10-26",
+          "snow_in": 0.0,
+          "tmin_f": 49.2
+        },
+        {
+          "date": "2026-10-27",
+          "snow_in": 0.0,
+          "tmin_f": 49.4
+        },
+        {
+          "date": "2026-10-28",
+          "snow_in": 0.0,
+          "tmin_f": 47.4
+        },
+        {
+          "date": "2026-10-29",
+          "snow_in": 0.0,
+          "tmin_f": 48.1
+        },
+        {
+          "date": "2026-10-30",
+          "snow_in": 0.0,
+          "tmin_f": 52.9
+        }
+      ],
+      "snow_total_in": 0.0,
+      "tmin_7d_f": 39.0,
+      "snow_days": [],
+      "snow_peak_in": 0.0
+    },
+    {
+      "city": "Milwaukee",
+      "state": "WI",
+      "tz": "America/Chicago",
+      "days": [
+        {
+          "date": "2026-10-25",
+          "snow_in": 0.0,
+          "tmin_f": 52.6
+        },
+        {
+          "date": "2026-10-26",
+          "snow_in": 0.0,
+          "tmin_f": 52.5
+        },
+        {
+          "date": "2026-10-27",
+          "snow_in": 0.0,
+          "tmin_f": 53.0
+        },
+        {
+          "date": "2026-10-28",
+          "snow_in": 0.0,
+          "tmin_f": 55.4
+        },
+        {
+          "date": "2026-10-29",
+          "snow_in": 0.0,
+          "tmin_f": 60.4
+        },
+        {
+          "date": "2026-10-30",
+          "snow_in": 0.0,
+          "tmin_f": 56.9
+        }
+      ],
+      "snow_total_in": 0.0,
+      "tmin_7d_f": 47.4,
+      "snow_days": [],
+      "snow_peak_in": 0.0
+    },
+    {
+      "city": "Buffalo",
+      "state": "NY",
+      "tz": "America/New_York",
+      "days": [
+        {
+          "date": "2026-10-25",
+          "snow_in": 0.0,
+          "tmin_f": 42.8
+        },
+        {
+          "date": "2026-10-26",
+          "snow_in": 0.0,
+          "tmin_f": 50.2
+        },
+        {
+          "date": "2026-10-27",
+          "snow_in": 0.0,
+          "tmin_f": 39.8
+        },
+        {
+          "date": "2026-10-28",
+          "snow_in": 0.0,
+          "tmin_f": 38.1
+        },
+        {
+          "date": "2026-10-29",
+          "snow_in": 0.0,
+          "tmin_f": 45.5
+        },
+        {
+          "date": "2026-10-30",
+          "snow_in": 0.0,
+          "tmin_f": 55.3
+        }
+      ],
+      "snow_total_in": 0.0,
+      "tmin_7d_f": 37.1,
+      "snow_days": [],
+      "snow_peak_in": 0.0
+    },
+    {
+      "city": "Salt Lake City",
+      "state": "UT",
+      "tz": "America/Denver",
+      "days": [
+        {
+          "date": "2026-10-25",
+          "snow_in": 0.0,
+          "tmin_f": 41.6
+        },
+        {
+          "date": "2026-10-26",
+          "snow_in": 0.0,
+          "tmin_f": 51.6
+        },
+        {
+          "date": "2026-10-27",
+          "snow_in": 0.0,
+          "tmin_f": 44.5
+        },
+        {
+          "date": "2026-10-28",
+          "snow_in": 0.0,
+          "tmin_f": 49.9
+        },
+        {
+          "date": "2026-10-29",
+          "snow_in": 0.0,
+          "tmin_f": 49.9
+        },
+        {
+          "date": "2026-10-30",
+          "snow_in": 0.0,
+          "tmin_f": 53.7
+        }
+      ],
+      "snow_total_in": 0.0,
+      "tmin_7d_f": 38.0,
+      "snow_days": [],
+      "snow_peak_in": 0.0
+    },
+    {
+      "city": "Anchorage",
+      "state": "AK",
+      "tz": "America/Anchorage",
+      "days": [
+        {
+          "date": "2026-10-25",
+          "snow_in": 0.0,
+          "tmin_f": 35.5
+        },
+        {
+          "date": "2026-10-26",
+          "snow_in": 0.0,
+          "tmin_f": 32.3
+        },
+        {
+          "date": "2026-10-27",
+          "snow_in": 0.0,
+          "tmin_f": 30.7
+        },
+        {
+          "date": "2026-10-28",
+          "snow_in": 0.0,
+          "tmin_f": 28.9
+        },
+        {
+          "date": "2026-10-29",
+          "snow_in": 0.0,
+          "tmin_f": 33.6
+        },
+        {
+          "date": "2026-10-30",
+          "snow_in": 0.0,
+          "tmin_f": 34.9
+        }
+      ],
+      "snow_total_in": 0.0,
+      "tmin_7d_f": 24.8,
+      "snow_days": [],
+      "snow_peak_in": 0.0
+    }
+  ],
+  "failed_cities": [],
+  "changes": {
+    "baseline_date": "2026-10-23",
+    "tmin_drops": [
+      {
+        "city": "Salt Lake City",
+        "state": "UT",
+        "tmin_prev_f": 45.5,
+        "tmin_now_f": 38.0,
+        "delta_f": -7.5,
+        "snow_prev_in": 0.0,
+        "snow_now_in": 0.0,
+        "snow_delta_in": 0.0
+      },
+      {
+        "city": "Denver",
+        "state": "CO",
+        "tmin_prev_f": 45.8,
+        "tmin_now_f": 40.5,
+        "delta_f": -5.3,
+        "snow_prev_in": 0.0,
+        "snow_now_in": 0.0,
+        "snow_delta_in": 0.0
+      },
+      {
+        "city": "Minneapolis",
+        "state": "MN",
+        "tmin_prev_f": 42.1,
+        "tmin_now_f": 40.0,
+        "delta_f": -2.1,
+        "snow_prev_in": 0.0,
+        "snow_now_in": 0.0,
+        "snow_delta_in": 0.0
+      },
+      {
+        "city": "Anchorage",
+        "state": "AK",
+        "tmin_prev_f": 25.4,
+        "tmin_now_f": 24.8,
+        "delta_f": -0.6,
+        "snow_prev_in": 0.0,
+        "snow_now_in": 0.0,
+        "snow_delta_in": 0.0
+      },
+      {
+        "city": "Chicago",
+        "state": "IL",
+        "tmin_prev_f": 45.1,
+        "tmin_now_f": 45.0,
+        "delta_f": -0.1,
+        "snow_prev_in": 0.0,
+        "snow_now_in": 0.0,
+        "snow_delta_in": 0.0
+      }
+    ],
+    "tmin_rises": [
+      {
+        "city": "Pittsburgh",
+        "state": "PA",
+        "tmin_prev_f": 34.3,
+        "tmin_now_f": 39.0,
+        "delta_f": 4.7,
+        "snow_prev_in": 0.0,
+        "snow_now_in": 0.0,
+        "snow_delta_in": 0.0
+      },
+      {
+        "city": "Cleveland",
+        "state": "OH",
+        "tmin_prev_f": 38.3,
+        "tmin_now_f": 41.7,
+        "delta_f": 3.4,
+        "snow_prev_in": 0.0,
+        "snow_now_in": 0.0,
+        "snow_delta_in": 0.0
+      },
+      {
+        "city": "Buffalo",
+        "state": "NY",
+        "tmin_prev_f": 33.8,
+        "tmin_now_f": 37.1,
+        "delta_f": 3.3,
+        "snow_prev_in": 0.0,
+        "snow_now_in": 0.0,
+        "snow_delta_in": 0.0
+      },
+      {
+        "city": "New York",
+        "state": "NY",
+        "tmin_prev_f": 36.0,
+        "tmin_now_f": 38.5,
+        "delta_f": 2.5,
+        "snow_prev_in": 0.0,
+        "snow_now_in": 0.0,
+        "snow_delta_in": 0.0
+      },
+      {
+        "city": "Milwaukee",
+        "state": "WI",
+        "tmin_prev_f": 45.4,
+        "tmin_now_f": 47.4,
+        "delta_f": 2.0,
+        "snow_prev_in": 0.0,
+        "snow_now_in": 0.0,
+        "snow_delta_in": 0.0
+      },
+      {
+        "city": "Boston",
+        "state": "MA",
+        "tmin_prev_f": 32.7,
+        "tmin_now_f": 33.4,
+        "delta_f": 0.7,
+        "snow_prev_in": 0.0,
+        "snow_now_in": 0.0,
+        "snow_delta_in": 0.0
+      }
+    ],
+    "snow_added": [],
+    "snow_removed": [],
+    "max_single_city_drop_f": -7.5,
+    "any_city_drop_ge_5f": true,
+    "consecutive_warmup_3d": true,
+    "multi_city_low_20f": false,
+    "snow_in_7d": false,
+    "cold_cities": [],
+    "warmup_city": "Minneapolis"
+  },
+  "signals": {
+    "snow_in_7d": false,
+    "multi_city_low_20f": false,
+    "cold_cities": [],
+    "any_city_drop_ge_5f": true,
+    "consecutive_warmup_3d": true,
+    "coldest_city": {
+      "city": "Anchorage",
+      "tmin_f": 24.8
+    },
+    "snow_cities": []
+  }
+}

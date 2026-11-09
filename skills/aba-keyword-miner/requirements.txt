@@ -1,0 +1,6 @@
+# ABA 自动词库 Skills —— 依赖（3 个就够）
+duckdb>=1.0
+openpyxl>=3.1
+requests>=2.31
+beautifulsoup4>=4.12
+lxml>=5.0

@@ -1,0 +1,5 @@
+interface:
+  display_name: Listing Rufus Auditor
+  short_description: Audit Amazon listings for Rufus-style AI retrieval readiness.
+  icon: magnifying-glass-chart
+  accent_color: '#FF9900'

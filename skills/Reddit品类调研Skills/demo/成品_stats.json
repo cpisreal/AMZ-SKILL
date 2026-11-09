@@ -1,0 +1,170 @@
+{
+ "keyword": "cat food",
+ "total_posts": 250,
+ "total_comments": 1785,
+ "total_chars": 810652,
+ "title_chars": 12210,
+ "body_chars": 279788,
+ "comment_chars": 518654,
+ "subreddit_dist": {
+  "CatAdvice": 79,
+  "cats": 67,
+  "catfood": 59,
+  "AskVet": 45
+ },
+ "comment_buckets": {
+  "0": 86,
+  "1-5": 104,
+  "6-15": 32,
+  "16-30": 12,
+  "31-60": 10,
+  "61-100": 6
+ },
+ "score_buckets": {
+  "0-9": 230,
+  "10-49": 9,
+  "50-99": 4,
+  "100-199": 3,
+  "200+": 4
+ },
+ "angle_freq": {
+  "Decision": {
+   "best": 93,
+   "worth": 23,
+   "recommend": 163,
+   "vs": 13,
+   "alternative": 12,
+   "compare": 5,
+   "should i": 24,
+   "which": 209
+  },
+  "Pain": {
+   "problem": 122,
+   "issue": 299,
+   "broken": 3,
+   "recall": 26,
+   "regret": 3,
+   "disappointed": 1,
+   "waste": 5,
+   "fail": 28
+  },
+  "Price": {
+   "expensive": 58,
+   "cheap": 55,
+   "price": 31,
+   "cost": 36,
+   "budget": 24,
+   "afford": 40
+  },
+  "Quality": {
+   "quality": 64,
+   "reliable": 1,
+   "premium": 4,
+   "lasted": 3,
+   "years": 184,
+   "lifetime": 1
+  }
+ },
+ "top_words": [
+  [
+   "food",
+   1869
+  ],
+  [
+   "cat",
+   1459
+  ],
+  [
+   "wet",
+   685
+  ],
+  [
+   "cats",
+   685
+  ],
+  [
+   "him",
+   665
+  ],
+  [
+   "vet",
+   637
+  ],
+  [
+   "like",
+   538
+  ],
+  [
+   "when",
+   518
+  ],
+  [
+   "them",
+   472
+  ],
+  [
+   "also",
+   469
+  ],
+  [
+   "one",
+   460
+  ],
+  [
+   "dry",
+   448
+  ],
+  [
+   "what",
+   426
+  ],
+  [
+   "out",
+   422
+  ],
+  [
+   "get",
+   412
+  ],
+  [
+   "eat",
+   384
+  ],
+  [
+   "there",
+   373
+  ],
+  [
+   "only",
+   327
+  ],
+  [
+   "water",
+   319
+  ],
+  [
+   "other",
+   314
+  ],
+  [
+   "because",
+   306
+  ],
+  [
+   "chicken",
+   286
+  ],
+  [
+   "now",
+   285
+  ],
+  [
+   "don",
+   282
+  ],
+  [
+   "time",
+   273
+  ]
+ ]
+}

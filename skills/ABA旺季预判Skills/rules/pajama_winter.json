@@ -1,0 +1,46 @@
+{
+  "name": "pajama_winter",
+  "label": "圣诞睡衣（案例包）",
+  "_说明": "这套属性是「圣诞睡衣」这个品类的；换品类复制本文件、只改 attributes 里的词根，代码不用动。",
+  "_口径": "roots 里每个键是一个词根，值是它的拼写变体（family/families）。匹配时用空格包裹，避免 men 误伤 womens。",
+  "must_terms": ["christmas", "pajama"],
+  "attributes": {
+    "人群": {
+      "family": ["family", "families"],
+      "couples": ["couples", "couple"],
+      "women": ["women", "womens", "womans"],
+      "men": ["men"],
+      "kids": ["kids", "kid", "children"],
+      "baby": ["baby"]
+    },
+    "节日": {
+      "christmas": ["christmas"],
+      "holiday": ["holiday", "holidays"],
+      "santa": ["santa"]
+    },
+    "款式": {
+      "matching": ["matching", "match"],
+      "set": ["set", "sets"],
+      "onesie": ["onesie", "onesies"],
+      "pants": ["pants", "pajama", "pajamas"]
+    },
+    "材质": {
+      "flannel": ["flannel"],
+      "cotton": ["cotton"],
+      "plaid": ["plaid"],
+      "fleece": ["fleece"]
+    },
+    "IP": {
+      "grinch": ["grinch"],
+      "disney": ["disney"]
+    },
+    "送礼": {
+      "gift": ["gift", "gifts"]
+    },
+    "促销": {
+      "deal": ["deal", "deals"],
+      "sale": ["sale", "sales"],
+      "clearance": ["clearance"]
+    }
+  }
+}

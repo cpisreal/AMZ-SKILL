@@ -1,0 +1,3 @@
+interface:
+  display_name: "Amazon Listing Intent Auditor"
+  short_description: "Audit Amazon listings using six search-intent paths."

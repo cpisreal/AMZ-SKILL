@@ -1,0 +1,3 @@
+interface:
+  display_name: "Amazon AI Listing Auditor"
+  short_description: "Audit Amazon listings for Alexa and AI Shopping readiness."

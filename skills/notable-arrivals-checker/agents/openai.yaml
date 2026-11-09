@@ -1,0 +1,3 @@
+interface:
+  display_name: "Notable Arrivals Checker"
+  short_description: "Score Amazon new products for New Arrival or Notable Arrival badge readiness."

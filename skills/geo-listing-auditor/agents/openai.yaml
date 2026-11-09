@@ -1,0 +1,3 @@
+interface:
+  display_name: "Geo Listing Auditor"
+  short_description: "Audit a listing against a Rufus report and score its GEO readiness"

@@ -1,0 +1,11 @@
+{
+  "name": "西柚洞察亚马逊竞品分析",
+  "installedAt": 1792659609385,
+  "source": "marketplace",
+  "version": "1.0.0",
+  "skillId": "skill_2095284237518364672",
+  "pay_mode": 0,
+  "description_zh": "基于西柚洞察MCP的亚马逊竞品分析与广告策略工具。提供7大核心工作场景：实时监控广告投放效果、快速找到高性价比流量缺口、快速拆解对标竞对打法、提升新品推广效率、精准拆解竞品流量以及广告策略、透视竞品广告策略和预算、高效搭建关键词库。适用于亚马逊卖家进行竞品分析、广告优化和关键词研究。",
+  "description_en": "Amazon competitor analysis and advertising strategy toolkit built on the Xiyou Insight MCP. Covers seven core scenarios: monitoring live ad performance, finding cost-effective traffic gaps, dissecting a rival playbook, speeding up new product launches, breaking down competitor traffic and ad strategy, revealing competitor ad budgets, and building keyword libraries. Use when an Amazon seller asks for competitor research, ad optimization, keyword research or traffic analysis. All data is fetched by calling MCP tools directly; the bundled scripts only handle post-processing, report generation and dashboard rendering.",
+  "iconSource": "letter:auto"
+}

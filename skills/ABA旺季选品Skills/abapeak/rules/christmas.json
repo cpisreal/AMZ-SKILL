@@ -1,0 +1,92 @@
+{
+  "_说明": "圣诞季节规则包。换季节 = 复制这个文件改 roots / products，代码不用动。",
+  "_顺序铁律": "① subclass_guards 先过 ② ambiguity 再剔 ③ products 按顺序首个命中生效 —— 所以越具体的产品要排得越靠前。",
+
+  "name": "christmas",
+  "label": "圣诞季 Christmas",
+
+  "roots": ["christmas", "xmas"],
+
+  "_subclass_guards说明": "这些词虽然含 'tree'，但属于另一种生意（树裙能卷、树不能），必须先摘出去，否则被 'tree' 吃掉",
+  "subclass_guards": [
+    "tree skirt",
+    "tree collar",
+    "tree topper",
+    "tree storage",
+    "tree bag"
+  ],
+
+  "_ambiguity说明": "同形异义。stockings 在英文里同时是「圣诞袜」和「女性丝袜」；不剔掉的话常青款丝袜会把圣诞袜量级灌爆。任何种子词都要过一遍人工甄别。",
+  "ambiguity": [
+    "thigh high",
+    "pantyhose",
+    "tights",
+    "fleece lined leggings"
+  ],
+
+  "_products说明": "match 里的关键词用「包含」匹配（与词根边界不同，产品名不做边界，因为要考虑 stocking/stockings 等形态）。subclasses 用于子类下钻。",
+  "products": [
+    {
+      "name": "袜内填充礼物",
+      "_note": "🔴 必须排在「圣诞袜」之前！`christmas stocking stuffers` 同时含 stocking 和 stuffer，排后面就被袜子吃掉了。它是个独立产品，量级能与袜子本身比肩 —— 也就是文章里说的「最大的子类跟袜子毫无关系」",
+      "match": ["stuffer"],
+      "subclasses": []
+    },
+    {
+      "name": "圣诞袜",
+      "match": ["stocking"],
+      "subclasses": ["personalized", "monogram", "embroidered", "knit", "pet", "dog", "cat", "baby", "kids", "holder", "hanger", "plush", "large", "mini"]
+    },
+    {
+      "name": "圣诞树",
+      "match": ["tree"],
+      "subclasses": ["pre lit", "flocked", "pencil", "slim", "real", "artificial", "white", "pink", "6 ft", "7.5 ft", "mini", "tabletop", "outdoor"]
+    },
+    {
+      "name": "灯饰",
+      "match": ["light", "lighting"],
+      "subclasses": ["string", "projector", "net", "solar", "led", "curtain", "icicle", "rope"]
+    },
+    {
+      "name": "花环藤蔓",
+      "match": ["wreath", "garland"],
+      "subclasses": []
+    },
+    {
+      "name": "挂饰",
+      "match": ["ornament"],
+      "subclasses": ["personalized", "photo", "wooden", "glass", "shatterproof", "set"]
+    },
+    { "name": "睡衣", "match": ["pajama", "pjs", "pj "], "subclasses": [] },
+    { "name": "毛衣", "match": ["sweater", "sweatshirt"], "subclasses": [] },
+    { "name": "服装", "match": ["dress", "outfit", "shirt", "onesie", "costume", "clothes", "socks", "scarf", "gloves", "hat", "earrings"], "subclasses": [] },
+    { "name": "家居布艺", "match": ["pillow", "blanket", "throw", "doormat", "rug", "curtain", "towel"], "subclasses": [] },
+    { "name": "餐桌用品", "match": ["tablecloth", "table runner", "napkin", "plate", "mug", "bowl"], "subclasses": [] },
+    { "name": "户外充气装饰", "match": ["inflatable", "yard", "outdoor decor"], "subclasses": [] },
+    { "name": "包装纸袋", "match": ["wrapping", "gift wrap"], "subclasses": [] },
+    { "name": "礼物盒袋", "match": ["gift box", "gift bag"], "subclasses": [] },
+    { "name": "贺卡", "match": ["card"], "subclasses": [] },
+    { "name": "玩具游戏", "match": ["puzzle", "game", "toy", "lego"], "subclasses": [] },
+    { "name": "食品", "match": ["candy", "cookie", "chocolate", "food", "snack"], "subclasses": [] },
+    { "name": "礼盒套装", "match": ["basket", "hamper", "set", "bundle"], "subclasses": [] },
+    { "name": "圣诞礼物（泛）", "match": ["gift", "present"], "subclasses": [] },
+    { "name": "装饰（泛）", "match": ["decor", "decoration"], "subclasses": [] }
+  ],
+
+  "_root_probes": [
+    "christmas tree", "christmaslights", "christmastime", "christmas-tree",
+    "3 ftchristmas tree", "boxmasters", "women pajamas", "omen decor",
+    "garment steamer", "menswear"
+  ],
+  "_explain_note": "注意：`omen decor` 是被**词根闸门**挡掉的，不是聚类 —— 聚类只在通过词根闸门的词上运行。",
+  "_explain_samples": [
+    "christmas tree", "christmas tree skirt", "christmas stocking",
+    "christmas stocking stuffers", "christmas stockings for women",
+    "thigh high stockings", "xmas ornament", "christmas lights",
+    "omen decor", "garment steamer"
+  ],
+  "_boundary_compare": [
+    "christmaslights", "christmastime", "3 ftchristmas tree",
+    "boxmasters", "christmas tree"
+  ]
+}

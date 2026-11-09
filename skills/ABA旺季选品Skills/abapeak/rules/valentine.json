@@ -1,0 +1,114 @@
+{
+  "_说明": "情人节季节规则包。换季节 = 复制这个文件改 roots / products，代码不用动。",
+  "_顺序铁律": "① subclass_guards 先过 ② ambiguity 再剔 ③ products 按顺序首个命中生效 —— 所以越具体的产品要排得越靠前。",
+
+  "name": "valentine",
+  "label": "情人节 Valentine",
+
+  "roots": ["valentine", "galentine"],
+
+  "_roots说明": "'valentine' 带复数后缀规则 → 自动覆盖 valentines / valentine's day。'galentine'（闺蜜节）是这几年真实起量的新场景，单独收一个词根。两个都 >= 6 字符 → 只查左边界；注意 'valentino'（品牌）不含 'valentine'，天然不会误命中。'vday' 只有 4 字符（短词根要两边都查，误命中风险高）所以刻意不收。",
+
+  "_subclass_guards说明": "含 valentine 但不是商品的一类词，先整条摘出去（≈ 圣诞包里的 tree skirt）",
+  "subclass_guards": [
+    "movie", "movies", "blu ray", "dvd", "soundtrack",
+    "my bloody valentine", "valentine one", "valentine 1",
+    "valentine massacre", "valentine vodka"
+  ],
+
+  "_ambiguity说明": "同形异义：词里带着情人节关键词，但主体其实是另一个品类（电子 / 健康 / 音乐）。⚠️ ambiguity 是「一票否决」——只要命中就整条丢。所以这里**只放几乎不可能出现在正当商品词里的冲突**。反例说明：'rose gold' 看着像冲突，**不能放这里** —— 放了会把 `valentine rose gold necklace`（正当爆款礼物）整条丢掉。正确的解法是**把「珠宝首饰」排在「鲜花玫瑰」前面**，让 necklace 先命中。",
+  "ambiguity": [
+    "cupid shuffle",
+    "heart rate",
+    "heart monitor",
+    "heartburn",
+    "heart supplement"
+  ],
+
+  "_products说明": "match 里的关键词用「包含」匹配（与词根边界不同，产品名不做边界，因为要考虑 rose/roses 等形态）。subclasses 用于子类下钻。",
+  "products": [
+    {
+      "name": "珠宝首饰",
+      "_note": "🔴 必须排在「鲜花玫瑰」之前：`valentine rose gold necklace` 里既有 rose 又有 necklace。珠宝排前面 → 归珠宝（对）；鲜花排前面 → 归鲜花（错，且这一条是情人节最大的礼物盘之一）。",
+      "match": ["necklace", "earring", "earrings", "bracelet", "ring", "pendant", "jewelry", "anklet", "brooch", "charm", "locket", "cufflink"],
+      "subclasses": ["gold", "rose gold", "silver", "sterling", "heart", "personalized", "initial", "birthstone", "matching", "couple", "for her", "for him"]
+    },
+    {
+      "name": "服装装扮",
+      "match": ["dress", "outfit", "shirt", "t shirt", "tshirt", "tee shirt", "sweater", "sweatshirt", "hoodie", "pajama", "onesie", "socks", "leggings", "tights", "bow tie", "tie", "suit", "vest"],
+      "subclasses": ["women", "men", "kids", "toddler", "baby", "girls", "boys", "couple", "matching", "plus size", "mom", "dad"]
+    },
+    {
+      "name": "鲜花玫瑰",
+      "_note": "排在珠宝/服装之后：'flower' 这个键比较宽（会命中 flower girl dress），让更具体的品类先吃。",
+      "match": ["rose", "roses", "bouquet", "flower", "flowers", "florist", "rose petal", "hydrangea", "tulip", "sunflower"],
+      "subclasses": ["red", "pink", "preserved", "eternal", "real", "artificial", "hd", "dozen", "forever", "single"]
+    },
+    { "name": "巧克力糖果", "match": ["chocolate", "chocolates", "candy", "truffle", "lollipop", "gummy", "gummies", "caramel", "conversation heart", "candy heart", "marshmallow"], "subclasses": [] },
+    { "name": "毛绒玩具", "match": ["teddy bear", "plush", "stuffed animal", "stuffed", "squishmallow"], "subclasses": [] },
+    {
+      "name": "内衣情趣",
+      "_note": "排在「毛绒玩具」之后：'teddy' 既是情趣内衣也是泰迪熊，靠顺序区分 —— `teddy bear` 已被上面用双词键吃掉，剩下的裸 teddy 落到这里。",
+      "match": ["lingerie", "teddy", "bra", "panties", "nightgown", "garter", "corset", "chemise", "babydoll", "robe"],
+      "subclasses": []
+    },
+    {
+      "name": "宠物礼物",
+      "_note": "🔴 必须排在「玩具游戏」之前：`valentine dog toy` 里既有 dog toy 也有 toy；宠物用品是自己的货盘，被「玩具」吃掉就看不到这个品类了。同样用「双词键」而不是裸 'dog'/'cat'。",
+      "match": ["dog treat", "cat treat", "dog toy", "cat toy", "pet toy", "dog bandana", "pet bandana", "dog collar", "pet collar", "dog bow tie", "pet bow tie"],
+      "subclasses": []
+    },
+    { "name": "礼盒套装", "match": ["gift basket", "gift box", "gift set", "hamper", "basket", "bundle", "care package", "gift tin"], "subclasses": [] },
+    { "name": "花环藤蔓", "match": ["wreath", "swag", "vine"], "subclasses": [] },
+    { "name": "蛋糕烘焙", "match": ["cake", "cupcake", "cookie", "brownie", "cake topper", "decorating", "sprinkles", "frosting", "cake pop"], "subclasses": [] },
+    { "name": "气球派对", "match": ["balloon", "balloons", "banner", "garland", "party", "streamer", "confetti", "photo booth", "backdrop", "tablecloth", "napkin", "plate", "cup", "centerpiece", "straw", "cutlery"], "subclasses": [] },
+    { "name": "家居布艺", "match": ["pillow", "pillowcase", "blanket", "throw", "rug", "doormat", "towel", "shower curtain", "mug", "tumbler", "coaster", "placemat"], "subclasses": [] },
+    { "name": "灯饰蜡烛", "match": ["candle", "candles", "light", "lights", "lighting", "led", "lantern", "string light", "projector", "tealight"], "subclasses": [] },
+    { "name": "美妆护肤", "match": ["perfume", "fragrance", "lipstick", "makeup", "nail", "bath bomb", "lotion", "body butter", "soap", "spa", "skincare", "lip gloss"], "subclasses": [] },
+    {
+      "name": "心形装饰",
+      "_note": "排在「珠宝首饰 / 服装装扮 / 家居布艺 / 气球派对」之后：'heart' 这个键很宽，先让更具体的品类拿走（heart necklace→珠宝、heart sweater→服装、heart pillow→家居、heart banner→派对），剩下的才是心形装饰本身。",
+      "match": ["heart", "hearts", "cupid", "arrow", "love sign", "love you", "xoxo", "kiss", "sweetheart", "sign"],
+      "subclasses": ["wood", "wooden", "led", "light up", "shelf", "table", "hanging", "yard", "personalized"]
+    },
+    { "name": "玩具游戏", "match": ["toy", "toys", "puzzle", "game", "figurine", "lego", "kite", "card game"], "subclasses": [] },
+    { "name": "文具贴纸", "match": ["sticker", "stickers", "pencil", "pen", "stationery", "notebook", "eraser", "bookmark"], "subclasses": [] },
+    { "name": "包装袋盒", "match": ["gift bag", "wrapping", "gift wrap", "tote", "paper bag", "favor bag", "goodie bag"], "subclasses": [] },
+    { "name": "贺卡", "match": ["card", "cards", "greeting card"], "subclasses": [] },
+    { "name": "红酒香槟", "match": ["wine", "champagne", "prosecco", "wine glass", "champagne glass", "whiskey", "cocktail", "flute"], "subclasses": [] },
+    { "name": "装饰（泛）", "match": ["decor", "decoration", "decorations", "ornament", "ornaments"], "subclasses": [] },
+    { "name": "礼物（泛）", "match": ["gift", "gifts", "present", "presents"], "subclasses": [] }
+  ],
+
+  "_root_probes": [
+    "valentine",
+    "valentine gift",
+    "valentinesdaygift",
+    "galentine party",
+    "avalentine",
+    "valentino dress",
+    "vday gift",
+    "my bloody valentine"
+  ],
+  "_explain_note": "注意：`valentine rose gold necklace` 靠**顺序**（珠宝在鲜花之前）归到珠宝首饰；如果反过来把「鲜花玫瑰」排到前面，它就会被 rose 吃成鲜花 —— 这类问题不要用 ambiguity 去挡，会把正常礼物一起挡掉。",
+  "_explain_samples": [
+    "valentine rose gold necklace",
+    "valentine roses bouquet",
+    "valentine teddy bear",
+    "valentine teddy lingerie",
+    "valentine heart sweater",
+    "valentine heart pillow",
+    "valentine heart banner",
+    "valentine heart sign",
+    "valentine conversation hearts candy",
+    "valentine movie blu ray",
+    "valentine heart rate monitor",
+    "valentinesdaygift"
+  ],
+  "_boundary_compare": [
+    "valentinesdaygift",
+    "valentinegift",
+    "valentine gift",
+    "valentinesdaydecor"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "source_date": "2026-11-09",
+  "baseline_date": "2026-11-08",
+  "thresholds": {
+    "a1_freezing_f": 32.0,
+    "a2_severe_f": 20.0,
+    "a3_drop_f": -5.0
+  },
+  "a1_status": "fired",
+  "a2_status": "not_fired",
+  "a3_status": "not_fired",
+  "a3_takes_p0": false,
+  "baseline_only": [
+    {
+      "city": "Anchorage",
+      "state": "AK",
+      "date": "2026-11-15",
+      "tmin_f": 12.5
+    }
+  ],
+  "alerts": [
+    {
+      "code": "A1",
+      "severity": 1,
+      "title": "冰点告警",
+      "city": "Minneapolis",
+      "state": "MN",
+      "date": "2026-11-13",
+      "tmin_f": 30.9,
+      "cities": [
+        {
+          "city": "Minneapolis",
+          "state": "MN",
+          "date": "2026-11-13",
+          "tmin_f": 30.9
+        }
+      ]
+    }
+  ],
+  "alert_count": 1,
+  "summary_line": "命中 1 条告警：A1"
+}
