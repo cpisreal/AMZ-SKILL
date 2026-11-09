@@ -144,6 +144,70 @@
 </div>
 
 <div class="wrap" data-page-node-id="SSO9aKFR1wkN9reAetDmYa">
+
+  <!-- AMZ-SKILL 安装卡片（由 npx 安装器配套，勿删） -->
+<section> 粘到你的 index.html 里
+     （建议放在标题区之后、技能卡片列表之前）。
+     自带样式与脚本，类名已加 amzsk- 前缀，不会和你页面其它样式冲突。
+     ============================================================ -->
+<section class="amzsk-install">
+  <style>
+    .amzsk-install{
+      --amzsk-bg:#0f1729; --amzsk-card:#16213e; --amzsk-text:#e8edf6;
+      --amzsk-muted:#9fb0c9; --amzsk-accent:#ff8f3f; --amzsk-line:#26345c;
+      max-width:760px; margin:28px auto; padding:20px 22px;
+      background:var(--amzsk-card); border:1px solid var(--amzsk-line);
+      border-radius:16px; color:var(--amzsk-text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    }
+    .amzsk-install h2{font-size:17px;margin:0 0 6px;font-weight:700}
+    .amzsk-install p{font-size:13.5px;color:var(--amzsk-muted);margin:0 0 14px;line-height:1.6}
+    .amzsk-cmd{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+    .amzsk-cmd code{
+      flex:1;min-width:240px;background:#0b1222;color:#d7e3f7;
+      padding:12px 14px;border-radius:10px;font-size:13.5px;
+      border:1px solid var(--amzsk-line);overflow-x:auto;white-space:nowrap;
+    }
+    .amzsk-cmd button{
+      background:linear-gradient(135deg,#ff8f3f,#f97316);color:#1a1205;border:0;
+      border-radius:10px;padding:0 18px;font-size:14px;font-weight:700;cursor:pointer;
+      font-family:inherit;
+    }
+    .amzsk-cmd button:active{transform:scale(.98)}
+    .amzsk-note{font-size:12px;color:var(--amzsk-muted);margin-top:12px;line-height:1.6}
+    .amzsk-note code{background:#0b1222;color:var(--amzsk-text);padding:1px 6px;border-radius:5px;font-size:11.5px}
+  </style>
+
+  <h2>⚡ 一键安装全部技能</h2>
+  <p>在终端运行下面这条命令，安装脚本会把仓库里所有技能复制到你的 WorkBuddy skills 目录：</p>
+  <div class="amzsk-cmd">
+    <code id="amzsk-cmd">npx github:cpisreal/AMZ-SKILL</code>
+    <button id="amzsk-copy" type="button">复制</button>
+  </div>
+  <p class="amzsk-note">
+    安装后<strong>重启 WorkBuddy</strong>，这些技能即可在对话中调用。<br>
+    指定目录：<code>node install.mjs --target ./my-skills</code> ·
+    项目级：<code>node install.mjs --project</code> ·
+    预览：<code>node install.mjs --list</code>
+  </p>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('amzsk-copy');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var text = document.getElementById('amzsk-cmd').textContent;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            btn.textContent = '已复制';
+            setTimeout(function () { btn.textContent = '复制'; }, 1500);
+          }).catch(function () {});
+        }
+      });
+    })();
+  </script>
+</section>
+
   <div class="grid" id="grid" data-page-node-id="W9KpNB25eDcPaJ2CtQCjjb">
       <div class="card" data-id="aba" data-search="ABA 自动词库 关键词挖掘 aba-keyword-miner 用 ABA 热搜词报告反向命中竞品 ASIN，自动产出带相关度分数的投放词表。 ABA 搜索词报告 CSV + 竞品 ASIN 带 1–10 分与 6 类词标签的 Excel 词表 python run.py 10–30 分钟 手上有多周 ABA 报告和一批竞品 ASIN，想批量选词、分类、导出成一张能直接用的表。 有 ABA 搜索词报告（品牌分析 → 搜索词报告 CSV），想定这批该打哪些词 有一批竞品 ASIN，想知道「竞品正在吃、自己可能没投」的词 要批量判「搜索词 vs 我的商品」相关度并分类：品类词 / 品牌词 / 属性词 / 场景词 要把选词结果导出成带分数、分类、打法建议的 Excel ABA 搜索词报告 CSV 竞品 ASIN 清单 asins.txt 我的 ASIN Jev key（OpenRouter 或 TypeSafe） 产出的是「词表」，不是「直接开投的结论」。它替代人肉筛词的体力活，不替代操盘手的投放判断。" style="--c:#c2410c" data-page-node-id="jGZFvwLBL2A9uiSUZiW9RK"><div data-page-node-id="mYK17w7DmSVJAW9Wk6BNd4"><span class="c-idx" data-page-node-id="klLavtUG1nkCSiWSMTsqqi">01</span><span class="c-cat" style="--c:#c2410c" data-page-node-id="rfvT3yXFCX2xHUsYkYbqWH">选词与词库</span></div><div class="c-name" data-page-node-id="F7JPp9kQjv5LjRqRuE7F4h">ABA 自动词库</div><div class="c-dir" data-page-node-id="f7FggobDBi0yBCrJFavpnJ">aba-keyword-miner</div><div class="c-desc" data-page-node-id="7GWN4aABIN7sx4qznYhCNJ">用 ABA 热搜词报告反向命中竞品 ASIN，自动产出带相关度分数的投放词表。</div><div class="c-meta" data-page-node-id="tSrLnlVQLTBBoZEJg4CLWo"><span class="pill hot" data-page-node-id="rFQ4eS1OfjNHSHHyxHrrHZ">需要报表文件</span><span class="pill" data-page-node-id="Mz5SDo3ZH1aSU9eFDfoAmu">python run.py</span><span class="pill runpill" style="background: rgb(23, 121, 74); color: rgb(255, 255, 255); border-color: rgb(23, 121, 74);" data-page-node-id="nBmPAFTR5B4f5nPGTeQIrK">⚡ 一键直跑</span></div><div class="c-foot" data-page-node-id="TbCKGD1y5j4HuR3dtVKu4v"><span class="t" data-page-node-id="45rTx4TjrBTCy9xphDb58a">10–30 分钟</span><span class="go" data-page-node-id="SFSpirvJF7ocIXvzRws8Bp">查看用法 →</span></div></div>
       <div class="card" data-id="aba-std" data-search="ABA 同质度打分 标品/非标品 · 自然单潜力 lingfei-aba-standard-vs-nonstandard 用 ABA 前三名点击/转化份额给词打同质度分，判断这个词值不值得抢排名。 ABA 热搜词报告 CSV（原始 6 列份额） 每词 rel_click / rel_conv 比值 + A/B/C/D 档动作清单 分层比值打分 5–15 分钟 想知道把一个词的排名做上去之后能不能带来自然单，而不是白烧广告费。 「这个词如果我投起来、排名上去，能不能带更多自然单？」 要给一批词排「抢排名 / 只买订单 / 不值得投」的优先级 判断产品该走标品还是非标品打法（看头部集中度差异） 排名上去了自然单没涨，想找原因 ABA 热搜词报告 CSV 要判断的词清单 它判断「这个词的头部是否垄断转化」，不判断你的 listing 能不能抢得动——落地还要看自家转化率与预算。" style="--c:#c2410c" data-page-node-id="i8xbic0paQ2EPBCzdOD07z"><div data-page-node-id="lArxwmFTlBmAYMw98qZPG6"><span class="c-idx" data-page-node-id="MzvYs7ZOfq2A3jPa9ZvyVG">02</span><span class="c-cat" style="--c:#c2410c" data-page-node-id="GL6GbRitsj0NegQq7h12MO">选词与词库</span></div><div class="c-name" data-page-node-id="SSaOFRAQpf2pBkqeHKLR5G">ABA 同质度打分</div><div class="c-dir" data-page-node-id="4IdEmcvqezHfDj5fvI8RHG">lingfei-aba-standard-vs-nonstandard</div><div class="c-desc" data-page-node-id="DUd6F14AUGvJDshXiyXcWP">用 ABA 前三名点击/转化份额给词打同质度分，判断这个词值不值得抢排名。</div><div class="c-meta" data-page-node-id="hhIrDipzBtSxjc5cOZ6G95"><span class="pill hot" data-page-node-id="j0llPygFT8jjNG5uylgGR8">需要报表文件</span><span class="pill" data-page-node-id="1xBj0l7zzw2guryYWutCKV">分层比值打分</span><span class="pill runpill" style="background: rgb(23, 121, 74); color: rgb(255, 255, 255); border-color: rgb(23, 121, 74);" data-page-node-id="aPTBjk98MimTzWZeEKDuEa">⚡ 一键直跑</span></div><div class="c-foot" data-page-node-id="BxuhQb2piVovBQvoPaB3PL"><span class="t" data-page-node-id="VCXB2gggpVpJsCtNdYy5bM">5–15 分钟</span><span class="go" data-page-node-id="gaBRBK3hLWTEfKpZv26enW">查看用法 →</span></div></div>

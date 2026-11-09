@@ -1,0 +1,31 @@
+{
+  "name": "amz-skill",
+  "version": "1.0.0",
+  "description": "亚马逊运营技能库 —— 通过 npx 一键安装到本地 WorkBuddy",
+  "type": "module",
+  "bin": {
+    "amz-skill": "install.mjs"
+  },
+  "files": [
+    "skills",
+    "install.mjs",
+    "package.json"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "scripts": {
+    "install:skills": "node install.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cpisreal/AMZ-SKILL"
+  },
+  "keywords": [
+    "workbuddy",
+    "amazon",
+    "skills",
+    "agent"
+  ],
+  "license": "MIT"
+}
