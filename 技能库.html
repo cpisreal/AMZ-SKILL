@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>亚马逊运营技能库</title>
+<style>
+:root{
+  --bg:#f6f7f9; --panel:#fff; --ink:#16202e; --ink2:#4a5768; --ink3:#8492a4;
+  --line:#e6eaf0; --line2:#eef1f5; --brand:#1f4fd8; --brand-soft:#eef3ff;
+  --shadow:0 1px 2px rgba(16,32,56,.04),0 8px 24px rgba(16,32,56,.06);
+  --shadow-h:0 4px 10px rgba(16,32,56,.06),0 18px 40px rgba(16,32,56,.11);
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,textarea{font:inherit; color:inherit}
+button{cursor:pointer}
+a{color:var(--brand); text-decoration:none}
+
+/* ---------- header ---------- */
+.top{background:linear-gradient(135deg,#132b57 0%,#1f4fd8 100%); color:#fff; padding:30px 0 26px}
+.top-inner{max-width:1240px; margin:0 auto; padding:0 28px; display:flex; align-items:center; justify-content:space-between; gap:28px; flex-wrap:wrap}
+.brand{display:flex; align-items:center; gap:16px}
+.logo{width:46px;height:46px;border-radius:13px;background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.28);display:grid;place-items:center;
+  font-size:22px;font-weight:800;letter-spacing:-1px;flex:none}
+.brand h1{margin:0;font-size:21px;font-weight:700;letter-spacing:.2px}
+.brand p{margin:3px 0 0;font-size:12.5px;color:rgba(255,255,255,.72)}
+.stats{display:flex;gap:26px}
+.stat{text-align:right}
+.stat b{display:block;font-size:22px;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums}
+.stat span{font-size:11.5px;color:rgba(255,255,255,.68)}
+
+/* ---------- toolbar ---------- */
+.toolbar-wrap{position:sticky;top:0;z-index:20;background:rgba(246,247,249,.92);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.toolbar{max-width:1240px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.search{position:relative;flex:1;min-width:240px;max-width:400px}
+.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);opacity:.45}
+.search input{width:100%;height:40px;padding:0 42px 0 38px;border:1px solid var(--line);
+  border-radius:10px;background:#fff;outline:none;transition:.16s}
+.search input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(31,79,216,.10)}
+.search kbd{position:absolute;right:11px;top:9px;font-size:11px;color:var(--ink3);
+  border:1px solid var(--line);border-radius:5px;padding:2px 6px;background:#fafbfc}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;
+  font-size:12.5px;color:var(--ink2);transition:.15s;white-space:nowrap}
+.chip:hover{border-color:#c3cfe4;color:var(--ink)}
+.chip.on{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600}
+.chip .n{opacity:.6;margin-left:5px;font-size:11px}
+.toggle{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink2);
+  white-space:nowrap;cursor:pointer;user-select:none}
+.toggle input{accent-color:var(--brand);width:15px;height:15px;cursor:pointer}
+
+/* ---------- main ---------- */
+main{max-width:1240px;margin:0 auto;padding:26px 28px 60px}
+.group{margin-bottom:34px}
+.group-head{display:flex;align-items:center;gap:9px;margin:0 0 14px}
+.group-head .dot{width:9px;height:9px;border-radius:3px;background:var(--c,#888)}
+.group-head h2{margin:0;font-size:15px;font-weight:700;letter-spacing:.2px}
+.group-head .count{font-size:11.5px;color:var(--ink3);background:#eceff4;border-radius:999px;padding:1px 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(292px,1fr));gap:14px}
+
+.card{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:17px 17px 14px;box-shadow:var(--shadow);cursor:pointer;transition:.18s;overflow:hidden;
+  display:flex;flex-direction:column;min-height:206px}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-h);border-color:#d4dcec}
+.card:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c,#888)}
+.card-top{display:flex;align-items:flex-start;gap:8px;justify-content:space-between}
+.card h3{margin:0;font-size:15.5px;font-weight:700;line-height:1.4;letter-spacing:.1px}
+.badge{flex:none;font-size:10.5px;font-weight:600;border-radius:5px;padding:2px 7px;line-height:1.7;white-space:nowrap}
+.badge.installed{background:#e8f6ee;color:#137a45}
+.badge.script{background:#fff3e6;color:#b45309}
+.badge.plain{background:#f0f2f6;color:#67748a}
+.tagline{margin:9px 0 12px;color:var(--ink2);font-size:13px;line-height:1.62;flex:1;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.io{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink2);margin-bottom:11px}
+.io div{display:flex;gap:7px;min-width:0}
+.io-k{flex:none;color:var(--ink3);font-size:11px;background:#f4f6f9;border-radius:4px;padding:0 5px;height:18px;line-height:18px}
+.io-v{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.tag{font-size:11px;color:var(--brand);background:var(--brand-soft);border-radius:5px;padding:2px 7px}
+.card-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line2);
+  padding-top:10px;margin-top:auto;font-size:11.5px;color:var(--ink3)}
+.card-foot .go{color:var(--brand);font-weight:600}
+.empty{text-align:center;padding:70px 20px;color:var(--ink3)}
+.empty b{display:block;font-size:16px;color:var(--ink2);margin-bottom:6px}
+
+/* ---------- drawer ---------- */
+.overlay{position:fixed;inset:0;background:rgba(14,24,40,.42);z-index:40;opacity:0;
+  pointer-events:none;transition:opacity .22s}
+.overlay.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;right:0;top:0;bottom:0;width:min(560px,100%);background:#fff;z-index:41;
+  box-shadow:-12px 0 40px rgba(12,24,44,.16);transform:translateX(102%);transition:transform .26s cubic-bezier(.22,.8,.3,1);
+  display:flex;flex-direction:column}
+.drawer.on{transform:translateX(0)}
+.drawer-head{padding:22px 26px 18px;border-bottom:1px solid var(--line);position:relative;flex:none}
+.drawer-head .cat{font-size:11.5px;font-weight:700;color:var(--c,#888);letter-spacing:.5px}
+.drawer-head h2{margin:8px 34px 7px 0;font-size:21px;line-height:1.35;font-weight:700}
+.drawer-head .sub{margin:0;color:var(--ink2);font-size:13px;line-height:1.65}
+.drawer-head .badges{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.close{position:absolute;right:20px;top:20px;width:30px;height:30px;border:1px solid var(--line);
+  background:#fff;border-radius:8px;color:var(--ink2);font-size:17px;line-height:1;display:grid;place-items:center}
+.close:hover{background:#f4f6f9;color:var(--ink)}
+.drawer-body{overflow-y:auto;padding:6px 26px 26px;flex:1}
+.sec{margin-top:22px}
+.sec h4{margin:0 0 9px;font-size:12px;font-weight:700;color:var(--ink3);letter-spacing:1px;text-transform:uppercase}
+.sec p{margin:0;color:var(--ink2);line-height:1.78;font-size:13.2px}
+.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+.list li{display:flex;gap:9px;align-items:flex-start;color:var(--ink2);font-size:13px;line-height:1.6}
+.list li::before{content:"";flex:none;width:6px;height:6px;border-radius:2px;background:var(--c,#888);margin-top:7px}
+.copybox{position:relative}
+.copybox textarea{width:100%;min-height:118px;resize:vertical;border:1px solid var(--line);
+  border-radius:10px;background:#fafbfd;padding:12px 13px;font-size:12.4px;line-height:1.7;
+  color:var(--ink2);outline:none;font-family:ui-monospace,SFMono-Regular,Consolas,"Microsoft YaHei",monospace}
+.copybox textarea:focus{border-color:var(--brand)}
+.pre{background:#172033;color:#dce6f5;border-radius:10px;padding:13px 15px;overflow-x:auto;
+  font:12px/1.75 ui-monospace,SFMono-Regular,Consolas,"Microsoft YaHei",monospace;white-space:pre;margin:0}
+.copybtn{position:absolute;right:9px;top:9px;border:1px solid var(--line);background:#fff;
+  border-radius:7px;padding:4px 10px;font-size:11.5px;color:var(--ink2);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.copybtn:hover{border-color:var(--brand);color:var(--brand)}
+.copybtn.ok{background:#e8f6ee;border-color:#bfe6cf;color:#137a45}
+.files{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.files li{padding:7px 12px;font:11.8px/1.55 ui-monospace,Consolas,"Microsoft YaHei",monospace;
+  color:var(--ink2);border-bottom:1px solid var(--line2);word-break:break-all}
+.files li:last-child{border-bottom:0}
+.files li:nth-child(odd){background:#fafbfd}
+.kv{display:grid;grid-template-columns:80px 1fr;gap:6px 12px;font-size:12.4px;color:var(--ink2)}
+.kv dt{color:var(--ink3)}
+.kv dd{margin:0;word-break:break-all}
+.note{background:#fff8ea;border:1px solid #f3e2bb;color:#8a6318;border-radius:9px;
+  padding:10px 12px;font-size:12.5px;line-height:1.7}
+.drawer-foot{padding:14px 26px;border-top:1px solid var(--line);display:flex;gap:9px;flex:none;background:#fff}
+.btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:9px 15px;font-size:13px;font-weight:600}
+.btn:hover{background:#f6f8fb}
+.btn.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.pri:hover{background:#1a44bd}
+.btn.flex{flex:1}
+.btn.sm{padding:6px 11px;font-size:12px;border-radius:7px}
+/* ---------- 资料准备面板 ---------- */
+.mat-box{border:1px solid var(--line);border-radius:12px;background:#fbfcfe;padding:14px}
+.mat-lead{margin:0 0 12px;font-size:12.5px;color:var(--ink2);line-height:1.72}
+.mat-field{margin-bottom:10px}
+.mat-field label{display:block;font-size:12px;color:var(--ink3);margin-bottom:5px;line-height:1.5}
+.mat-field input,.mat-field textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);
+  border-radius:8px;padding:8px 10px;font-size:12.5px;line-height:1.6;font-family:inherit;
+  color:var(--ink);background:#fff;outline:none}
+.mat-field input:focus,.mat-field textarea:focus{border-color:var(--brand)}
+.mat-field textarea{min-height:52px;resize:vertical}
+.mat-drop{display:block;margin-top:12px;border:1.5px dashed var(--line);border-radius:10px;
+  padding:15px;text-align:center;background:#fff;cursor:pointer}
+.mat-drop:hover,.mat-drop.over{border-color:var(--brand);background:#f2f6ff}
+.mat-drop b{display:block;font-size:13px;color:var(--ink);font-weight:600;margin-bottom:4px}
+.mat-drop span{font-size:11.5px;color:var(--ink3)}
+.mat-drop input[type=file]{display:none}
+.mat-files{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.mat-file{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:8px;
+  background:#fff;padding:7px 10px;font-size:11.8px;color:var(--ink2)}
+.mat-file .mf-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-weight:600;color:var(--ink)}
+.mat-file .mf-meta{color:var(--ink3);white-space:nowrap}
+.mat-file .mf-x{border:0;background:transparent;color:var(--ink3);cursor:pointer;
+  font-size:15px;line-height:1;padding:0 2px}
+.mat-file .mf-x:hover{color:var(--brand)}
+.mat-status{margin-top:10px;font-size:11.8px;color:var(--ink3);display:flex;gap:8px;flex-wrap:wrap}
+.mat-status .ok{color:#137a45;font-weight:600}
+.mat-actions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.mat-hint{margin-top:9px;font-size:11.5px;color:var(--ink3);line-height:1.68}
+.mat-meter{margin-top:10px;font-size:11.8px;color:var(--ink3);display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.mat-meter .bar{flex:1;min-width:110px;height:6px;border-radius:6px;background:#e8edf5;overflow:hidden}
+.mat-meter .bar i{display:block;height:100%;width:0;background:#137a45;transition:width .22s}
+.mat-meter.warn .bar i{background:#d97706}
+.mat-meter .val{font-variant-numeric:tabular-nums;white-space:nowrap}
+.mat-meter .tag-ok{color:#137a45;font-weight:600}
+.mat-meter .tag-warn{color:#b45309;font-weight:600}
+
+/* ---------- 工具栏里的工具入口 ---------- */
+  border:1px solid #cfdcf7;background:#fff;color:var(--brand);border-radius:10px;
+  font-size:12.5px;font-weight:600;white-space:nowrap;transition:.15s}
+
+.boot{max-width:600px;margin:56px auto;background:#fff;border:1px solid var(--line);
+  border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);line-height:1.8}
+.boot h2{margin:0 0 10px;font-size:17px;color:#b45309}
+.boot p{margin:8px 0;color:var(--ink2);font-size:13.4px}
+.boot code{background:#f2f4f8;border-radius:4px;padding:1px 6px;font-size:12px}
+.boot b{color:var(--ink)}
+
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,14px);background:#172033;color:#fff;
+  border-radius:9px;padding:10px 18px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:60;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- 唤起失败兜底弹窗 ---------- */
+.lm-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;
+  justify-content:center;z-index:70;padding:20px}
+.lm-backdrop.on{display:flex}
+.lm-card{background:#fff;border-radius:14px;max-width:540px;width:100%;padding:22px 22px 18px;
+  box-shadow:0 24px 60px rgba(15,23,42,.32)}
+.lm-card h3{margin:0 0 8px;font-size:16px}
+.lm-sub{margin:0 0 12px;color:var(--ink2);font-size:13px;line-height:1.7}
+.lm-steps{margin:0 0 12px;padding-left:20px;color:var(--ink2);font-size:13px;line-height:1.85}
+.lm-ta{width:100%;height:110px;resize:vertical;font:12px/1.6 ui-monospace,Consolas,"Microsoft YaHei",monospace;
+  border:1px solid var(--line);border-radius:10px;padding:10px;color:var(--ink);background:#f8fafc}
+.lm-link{display:flex;gap:8px;margin-top:10px}
+.lm-link input{flex:1;min-width:0;font:11.5px ui-monospace,Consolas,monospace;color:var(--ink2);
+  border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:#f8fafc}
+.lm-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+
+@media (max-width:720px){
+  .top-inner,.toolbar,main{padding-left:16px;padding-right:16px}
+  .stats{gap:18px}.stat b{font-size:18px}
+  .grid{grid-template-columns:1fr}
+  .drawer-head,.drawer-body,.drawer-foot{padding-left:18px;padding-right:18px}
+  .search{max-width:none}
+}
+/* ==== 需要 CSV 的技能：详情内即时预览（新增，仅详情抽屉内生效） ==== */
+.cpv-tip{background:#eef3ff;border:1px solid #d7e3ff;color:#1f3a8a;border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.65;margin:0 0 10px}
+.cpv-tip b{color:#1f4fd8}
+.cpv-card{border:1px solid #e6eaf0;border-radius:10px;overflow:hidden;margin:0 0 12px;background:#fff}
+.cpv-hd{padding:8px 12px;background:#fafbfc;border-bottom:1px solid #e6eaf0;font-size:12.5px;color:#4a5768;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.cpv-hd b{color:#1f4fd8}
+.cpv-tag{margin-left:auto;font-size:11px;color:#0f8a72;background:#e7f7f2;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.cpv-scroll{max-height:230px;overflow:auto}
+.cpv-card table{border-collapse:collapse;width:100%;font-size:12px}
+.cpv-card th,.cpv-card td{border-bottom:1px solid #eef1f5;border-right:1px solid #eef1f5;padding:5px 8px;text-align:left;white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.cpv-card th{background:#f6f8fc;position:sticky;top:0;color:#4a5768;font-weight:600}
+.cpv-ft{padding:7px 12px;font-size:11.5px;color:#8492a4;background:#fafbfc;line-height:1.5}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <div class="logo">A</div>
+      <div>
+        <h1 id="title">亚马逊运营技能库</h1>
+        <p id="subtitle">技能包整理清单</p>
+      </div>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<div class="toolbar-wrap">
+  <div class="toolbar">
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path>
+      </svg>
+      <input id="q" type="search" placeholder="搜技能名、标签、输入、产出…" autocomplete="off">
+      <kbd>/</kbd>
+    </div>
+    <div class="chips" id="chips"></div>
+    <label class="toggle"><input type="checkbox" id="onlyInstalled"><span>仅看本机已装</span></label>
+      </div>
+</div>
+
+<main id="main">
+  <div class="boot">
+    <h2>技能卡片没有加载出来</h2>
+    <p>如果你打开的是 <code>apollo-hub/src/template.html</code>，那是<b>源码模板</b>，不能直接双击打开。请改开工作目录根目录下的 <code>技能库.html</code>，或双击 <code>打开技能库.bat</code>。</p>
+    <p>如果打开的是 <code>技能库.html</code> 却仍停在这里，说明浏览器拦截了页面脚本 —— 请改用 Chrome / Edge 打开，或检查是否装了禁止 JavaScript 的扩展。</p>
+  </div>
+</main>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="技能详情">
+  <div class="drawer-head" id="drawerHead"></div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot">
+    <button class="btn pri flex" id="launchBtn">直接发起对话</button>
+    <button class="btn" id="copyPrompt">复制调用指令</button>
+    <button class="btn" id="copyCmd">复制命令</button>
+    <button class="btn" id="closeBtn">关闭</button>
+  </div>
+</aside>
+
+
+<div class="toast" id="toast"></div>
+
+<div class="lm-backdrop" id="launchFallback">
+  <div class="lm-card">
+    <h3 id="lmHead">未能自动唤起 WorkBuddy</h3>
+    <p class="lm-sub" id="lmSub">当前环境未能把深链交给桌面端（内置预览面板会拦截 <code>workbuddy://</code>；普通浏览器则需在弹窗里点「打开」）。调用指令已自动复制到剪贴板，按下面三步即可继续：</p>
+    <ol class="lm-steps" id="lmSteps">
+      <li>打开 WorkBuddy 桌面端，新建一个对话</li>
+      <li>把下面已复制的指令直接粘贴发送</li>
+      <li>想验证深链本身是否可用：复制下方深链，按 <b>Win + R</b> 粘贴回车</li>
+    </ol>
+    <textarea id="lmTa" readonly spellcheck="false" class="lm-ta"></textarea>
+    <div class="lm-link"><input id="lmLink" readonly spellcheck="false" aria-label="深链地址"><button class="btn sm" id="lmCopyLink" type="button">复制深链</button></div>
+    <div class="lm-actions">
+      <button class="btn pri" id="lmCopy" type="button">复制指令</button>
+      <button class="btn" id="lmDownload" type="button" style="display:none">下载完整资料包</button>
+      <button class="btn" id="lmClose" type="button">关闭</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+const DATA = {"title":"亚马逊运营技能库","source":"技能包目录 + 本机已装技能","source_note":"顶层 3 个 zip 受平台安全策略限制，文件内容无法读取（手动解压后仍被拦截）。其中「ABA自动词库Skills_v1.0.zip」同款技能由「词库搭建 2.zip」内嵌副本覆盖；两个公众号干货包里的 10 个技能，本机 ~/.workbuddy/skills 下均已安装，因此改用本机 SKILL.md 的说明补齐成卡片（抽屉里会标注来源）。另有 1 个品类专属的每日运营简报涉及私有策略，未纳入本页。","blocked":[{"name":"ABA自动词库Skills_v1.0.zip","recovered":true,"reason":"文件内容不可读；同款技能由「词库搭建 2.zip」内嵌副本整理成卡片"},{"name":"公众号干货Apollo-skills）.zip","recovered":true,"reason":"文件内容不可读；包内技能已用本机已安装版本补齐"},{"name":"阿波罗公众号SKILL干货.zip","recovered":true,"reason":"文件内容不可读；包内技能已用本机已安装版本补齐"}],"cats":["关键词 · ABA 选品","广告报表 · 预算","Listing · AI 搜索优化","Rufus · GEO 优化","竞品 · 市场洞察"],"packs":[{"pack":"ABA旺季选品Skills_v1.0.zip","rel":"skills汇总/ABA旺季选品Skills_v1.0.zip","size_kb":63.6,"docs":["ABA旺季选品Skills/README.md"],"scripts":["ABA旺季选品Skills/abapeak/__init__.py","ABA旺季选品Skills/abapeak/cli.py","ABA旺季选品Skills/abapeak/cluster.py","ABA旺季选品Skills/abapeak/export.py","ABA旺季选品Skills/abapeak/pipeline.py","ABA旺季选品Skills/abapeak/rhythm.py","ABA旺季选品Skills/abapeak/roots.py","ABA旺季选品Skills/abapeak/rules/__init__.py","ABA旺季选品Skills/abapeak/schema.py","ABA旺季选品Skills/demo/make_demo_aba.py","ABA旺季选品Skills/run.py","ABA旺季选品Skills/tests/test_pipeline.py"],"files":["ABA旺季选品Skills/README.md","ABA旺季选品Skills/abapeak/__init__.py","ABA旺季选品Skills/abapeak/cli.py","ABA旺季选品Skills/abapeak/cluster.py","ABA旺季选品Skills/abapeak/export.py","ABA旺季选品Skills/abapeak/pipeline.py","ABA旺季选品Skills/abapeak/rhythm.py","ABA旺季选品Skills/abapeak/roots.py","ABA旺季选品Skills/abapeak/rules/__init__.py","ABA旺季选品Skills/abapeak/rules/christmas.json","ABA旺季选品Skills/abapeak/rules/halloween.json","ABA旺季选品Skills/abapeak/rules/valentine.json","ABA旺季选品Skills/abapeak/schema.py","ABA旺季选品Skills/demo/make_demo_aba.py","ABA旺季选品Skills/demo/成品_演示报告.md","ABA旺季选品Skills/demo/成品_演示报告.xlsx","ABA旺季选品Skills/demo/成品_真实数据验证报告.md","ABA旺季选品Skills/demo/成品_真实数据验证报告.xlsx","ABA旺季选品Skills/requirements.txt","ABA旺季选品Skills/run.py","ABA旺季选品Skills/tests/test_pipeline.py"],"nested":[],"usage":"pip install -r requirements.txt\npython run.py demo\n# 0) 准备：把 ABA 周报 CSV 放进一个目录\n#    亚马逊后台 → 品牌分析 → 搜索词报告 → 按周下载\n#    文件名要带 YYYY_MM_DD（如 US_Top_Search_Terms_Simple_Week_2025_11_08.csv）\n\n# 1) 建议先转 parquet 缓存（第 2 遍起快一个量级）\npython run.py cache --csv-dir ./aba --out ./.cache\n\n# 2) 一条命令出报告\npython run.py all --csv-dir ./aba --pack christmas \\\n                 --cache-dir ./.cache --out ./out\npython run.py explain --pack christmas   # 三道闸门到底怎么判的（不读数据）\npython run.py scan   --csv-dir ./aba     # 只扫词 + 聚类\npython run.py rhythm --csv-dir ./aba     # 只出六维度节奏\npython run.py deep   --csv-dir ./aba --product 圣诞袜   # 只深挖一个产品\npython run.py explain --pack christmas   # 看三种口径的实际判定差异\npython run.py --roots-mode auto          # 默认，推荐\npython run.py --roots-mode strict        # 一律两边（会剔连写词，慎用）\npython run.py --roots-mode loose         # 不查边界 = LIKE，只用来复现别人的数\nsubclass_guards（子类守卫） → ambiguity（同形异义） → products（首个命中生效）\npython run.py packs\npython run.py all --csv-dir ./aba --pack halloween --out ./out\npython run.py all","about":"输入一个大概的方向词（比如圣诞节、宠物、露营），它会结合亚马逊官方热搜词数据，帮你找出适合提前进场做旺季的产品机会，并给出什么时候进场、备货备多少的建议，最后输出一份可以直接看的机会报告。","outputs":"【输出长什么样】 章节 内容 一、数据规模 12 周记录数 / 去重词数 / 有效词数 / 有效信号占比 二、大盘节奏 每周词条数 + 环比，标出 加速度峰 与 词量顶点 和领先周数 三、产品机会清单 每个产品的六维度 四、分析 → 决策 每个指标对应的 动作 五、形态 → 备货策略 4 种形态各自怎么备货 ---","name_en":"","desc":"","name":"ABA 旺季选品","cat":"关键词 · ABA 选品","tagline":"一个方向词 → 20 个产品 → 进场时点 + 备货打法，一条命令跑完","inputs":["方向词（如 christmas / 宠物 / 露营）","ABA 热搜词周报：卖家后台 → 品牌 → 品牌分析(Brand Analytics) → 搜索词报告（热门搜索词 / Top Search Terms），时间选按周(Weekly) 导出的 CSV（文件名类似 US_Top_Search_Terms_Simple_Week_2026_09_12.csv）。报表内容很多，不需要粘贴内容：直接【上传文件】，或【粘贴文件在本机的完整路径】（如 C:/Users/你/Desktop/xxx.csv）即可"],"outputs_list":["20 个候选产品","进场时点与备货建议","分析报告"],"tags":["ABA","选品","旺季"],"installed":true,"has_skill_md":false,"has_readme":true,"has_run":true,"installed_dir":"ABA旺季选品Skills"},{"pack":"aba_grow_skills_v1.0.zip","rel":"skills汇总/aba_grow_skills_v1.0.zip","size_kb":19.5,"docs":["ABA旺季预判Skills/README.md"],"scripts":["ABA旺季预判Skills/run.py","ABA旺季预判Skills/abagrow/__init__.py","ABA旺季预判Skills/abagrow/cli.py","ABA旺季预判Skills/abagrow/pipeline.py","ABA旺季预判Skills/abagrow/report.py","ABA旺季预判Skills/abagrow/schema.py","ABA旺季预判Skills/demo/__init__.py","ABA旺季预判Skills/demo/make_demo.py","ABA旺季预判Skills/tests/test_pipeline.py"],"files":["ABA旺季预判Skills/README.md","ABA旺季预判Skills/requirements.txt","ABA旺季预判Skills/run.py","ABA旺季预判Skills/abagrow/__init__.py","ABA旺季预判Skills/abagrow/cli.py","ABA旺季预判Skills/abagrow/pipeline.py","ABA旺季预判Skills/abagrow/report.py","ABA旺季预判Skills/abagrow/schema.py","ABA旺季预判Skills/rules/pajama_winter.json","ABA旺季预判Skills/demo/__init__.py","ABA旺季预判Skills/demo/make_demo.py","ABA旺季预判Skills/demo/demo_rules.json","ABA旺季预判Skills/tests/test_pipeline.py"],"nested":[],"usage":"pip install -r requirements.txt\npython run.py demo\n# 0) 把 ABA 周报 CSV 放进一个目录，文件名要带 YYYY_MM_DD\n#    如 US_Top_Search_Terms_Simple_Week_2025_11_08.csv\n\n# 1) 建议先转 parquet 缓存（第 2 遍起快一个量级）\npython run.py cache --csv-dir ./aba --cache-dir ./.cache\n\n# 2) 一条命令出结果：品类词 = 必须同时含 christmas 和 pajama\npython run.py all --csv-dir ./aba --cache-dir ./.cache \\\n                  --must christmas,pajama --rules rules/pajama_winter.json --out ./out","about":"帮你判断一个关键词的旺季什么时候到来、现在进场是不是太早或太晚。它会分析官方热搜词报告里 12 周的搜索量变化趋势，提醒你避开\"看到搜索量最高才进场、结果已经晚了\"这个最常见的坑。","outputs":"【2) 一条命令出结果：品类词 = 必须同时含 christmas 和 pajama】 python run.py all --csv-dir ./aba --cache-dir ./.cache \\ --must christmas,pajama --rules rules/pajama winter.json --out ./out 产出（ out/ 下）： 文件 里面是什么 1 种子ASIN.csv 品类里最中心的 N 个产品，按「被多少个相关词命中」排序 2 关联词表.csv 从这批种子 ASIN 反查出来的全部搜索词（去重） 3 属性周矩阵.csv 属性 × 周 的词数矩阵 4 加速度表.csv 每个属性/词根的每周环比增量 + 三个时间点标注 报告.md 结论汇总：主轴词根、零需求属性、三个时间点、属性节奏对比 ---","name_en":"","desc":"","name":"ABA 旺季预判","cat":"关键词 · ABA 选品","tagline":"从 ABA 周报算出品类「什么时候起量 / 见顶 / 该撤」三个时间点","inputs":["ABA 热搜词周报：同上，卖家后台品牌分析 → 搜索词报告（热门搜索词）按周导出的 CSV，至少连续 12 周（文件名 US_Top_Search_Terms_Simple_Week_*.csv）。报表内容很多，不需要粘贴内容：直接【上传文件】，或【粘贴文件在本机的完整路径】（如 C:/Users/你/Desktop/xxx.csv）即可"],"outputs_list":["属性构成与周增速","起量 / 见顶 / 撤退时间点","趋势图"],"tags":["ABA","趋势","备货"],"installed":true,"has_skill_md":false,"has_readme":true,"has_run":true,"installed_dir":"ABA旺季预判Skills"},{"pack":"aba-standard-vs-nonstandard.zip","rel":"skills汇总/aba-standard-vs-nonstandard.zip","size_kb":13.4,"docs":["lingfei-aba-standard-vs-nonstandard/SKILL.md"],"scripts":["lingfei-aba-standard-vs-nonstandard/scripts/aba_homogeneity_score.py","lingfei-aba-standard-vs-nonstandard/scripts/check_article.py"],"files":["lingfei-aba-standard-vs-nonstandard/references/research-2026-10.md","lingfei-aba-standard-vs-nonstandard/scripts/aba_homogeneity_score.py","lingfei-aba-standard-vs-nonstandard/SKILL.md","lingfei-aba-standard-vs-nonstandard/scripts/check_article.py"],"nested":[],"usage":"rel_click = top3_click ÷ 该层点击份额中位     1.0 = 与大盘持平\nrel_conv  = top3_conv  ÷ 该层转化份额中位\nhead_share_click = top3_click ÷ 3            进前三后平均能分到的点击份额（份额天花板）\n# 打分指定词表（一行一个词）\npython3 scripts/aba_homogeneity_score.py \\\n  --aba \"/Volumes/UD800/01_ABA数据/US_Top_Search_Terms_Simple_Week_2026_09_12.csv\" \\\n  --terms terms.txt --out scored.csv\n\n# 或打分该周排名前 2000 的词（建立自己的分档清单）\npython3 scripts/aba_homogeneity_score.py --aba <周报CSV> --top 2000 --out top2000.csv","about":"帮你判断一个搜索词值得不值得花力气去抢排名。它会用官方数据衡量这个词是不是被头部少数产品垄断，按 A/B/C/D 分级告诉你：投广告加抢排名能不能带来更多自然订单，避免把预算浪费在没机会的词上。","outputs":"【九 交付成「文章 + Skill」时的口径】 要把它写成公众号文章 / 交付包时，先读 references/delivery-and-qa-checklist.md ： 交付顺序（先文章含图、确认后再发 Skill）、文章硬指标、成稿自检脚本 （ scripts/check article.py ）、 图内数字三类高频错误 、以及建飞书文档的坑 （不要用 rebuild doc inplace.py ，它会清空文档）。","name_en":"lingfei-aba-standard-vs-nonstandard","desc":"用 ABA（Amazon Brand Analytics）热搜词报告里的「前三个产品的点击份额 / 转化份额」 给每个搜索词打一个「同质度」分，判断这个词在广告投放 + 排名提升之后是否有机会带来 更多自然订单。核心是把绝对份额换成「相对同层大盘」的两个比值（rel click / rel conv）， 再按 A/B/C/D 四档给动作。触发词：标品非标品、自然单潜力、这个词值不值得抢排名、 ABA 点击份额、转化份额、前三名垄断、头部集中度、词级打分、同质度。","name":"ABA 标准词 / 非标词判别","cat":"关键词 · ABA 选品","tagline":"用前三名点击份额 / 转化份额算「同质度」，判断这个词打上去有没有自然单","inputs":["ABA 热搜词周报（完整版）：卖家后台品牌分析 → 搜索词报告（热门搜索词）按周导出的 CSV。⚠️ 必须是【完整原始周报】，不要下载精简/过滤后的窄表——脚本需要『前三名点击份额 + 转化份额』共 6 列（Click Share #1-3、Conversion Share #1-3），窄表常丢转化份额那 3 列会报错（文件名 US_Top_Search_Terms_Simple_Week_*.csv）。报表内容很多，不需要粘贴内容：直接【上传文件】，或【粘贴文件在本机的完整路径】（如 C:/Users/你/Desktop/xxx.csv）即可","要打分的词表：一行一个搜索词（txt 或纯文本），或留空用 --top 2000 自动对排名前 2000 词打分。直接粘贴文字即可"],"outputs_list":["rel_click / rel_conv 比值","标准词 vs 非标词分层","投放优先级"],"tags":["ABA","同质度","自然单"],"installed":true,"has_skill_md":true,"has_readme":false,"has_run":false,"installed_dir":"lingfei-aba-standard-vs-nonstandard"},{"name":"关键词词库（挖掘 + 搭建）","cat":"关键词 · ABA 选品","tagline":"用 ABA 热搜词报告 + 竞品 ASIN 反向命中，自动产出高相关词表；并附词库搭建 Excel 模板","inputs":["ABA 搜索词报告 CSV（卖家后台品牌分析导出）。报表内容很多，不需要粘贴内容：直接【上传文件】，或【粘贴文件在本机的完整路径】（如 C:/Users/你/Desktop/xxx.csv）即可","竞品 ASIN 清单（可选）：一行一个 ASIN，直接粘贴文字即可"],"outputs_list":["分层关键词词表","投放建议与否定词"],"tags":["ABA","选词","词库"],"installed":true,"pack":"ABA自动词库Skills_v1.0.zip","rel":"skills汇总/词库搭建 2.zip → 内嵌技能包","size_kb":55.8,"about":"帮你从亚马逊官方热搜词报告中，自动捞出\"真实买家搜过、并且点进了你竞品\"的关键词，自动判断相关度和类型，生成可直接投广告的词库。同时附赠一份标准词表 Excel 模板（含字段与分层口径示例），帮你从零搭起一份规范的关键词库。","outputs":["【输出的词表怎么读】 列 含义 怎么用 :-- :-- :-- 搜索词 反向命中的词 — 相关度分 Jev 给的 1–10 分 ≥8 分 直接建活动；6–8 分分层控成本；<6 分放观察池 词分类 6 类：品类词 / 自有品牌词 / 竞品品牌词 / 属性规格词 / 场景用途词 / 其他长尾 见表下方「打法」 最近排名 命中周里 最新一周 的搜索频率排名 跟历史最佳一对比，就知道这个词是在起量还是在掉 历史最佳排名 所有周里的最好排名 最近排名 ≫ 历史最佳 = 在掉；最近 ≈ 最佳 = 正热 命中ASIN数 有多少个目标 ASIN 出现在这个词下 命中越多 = 越多竞品在吃这个词，越是必打 点击份额 最新一周命中的竞品在该词下吃掉的 click share 份额越高越难抢，但抢下来的收益也越大 把握度 Jev 对「这个分」的置信度 <60% 建议人工抽验 ，≥90% 可以闭眼用 你会怎么用 按分类自动给出的打法建议 — 6 类词对应的打法 （表里已自动填好）： 词分类 打法 :-- :-- 品类词 主力投放 自有品牌词 守品牌 （防止竞品截流） 竞品品牌词 否定词 / 或单独开活动打拦截 属性规格词 长尾拓量 场景用途词 长尾拓量","【输出的词表怎么读】 列 含义 怎么用 :-- :-- :-- 搜索词 反向命中的词 — 相关度分 Jev 给的 1–10 分 ≥8 分 直接建活动；6–8 分分层控成本；<6 分放观察池 词分类 6 类：品类词 / 自有品牌词 / 竞品品牌词 / 属性规格词 / 场景用途词 / 其他长尾 见表下方「打法」 最近排名 命中周里 最新一周 的搜索频率排名 跟历史最佳一对比，就知道这个词是在起量还是在掉 历史最佳排名 所有周里的最好排名 最近排名 ≫ 历史最佳 = 在掉；最近 ≈ 最佳 = 正热 命中ASIN数 有多少个目标 ASIN 出现在这个词下 命中越多 = 越多竞品在吃这个词，越是必打 点击份额 最新一周命中的竞品在该词下吃掉的 click share 份额越高越难抢，但抢下来的收益也越大 把握度 Jev 对「这个分」的置信度 <60% 建议人工抽验 ，≥90% 可以闭眼用 你会怎么用 按分类自动给出的打法建议 — 6 类词对应的打法 （表里已自动填好）： 词分类 打法 :-- :-- 品类词 主力投放 自有品牌词 守品牌 （防止竞品截流） 竞品品牌词 否定词 / 或单独开活动打拦截 属性规格词 长尾拓量 场景用途词 长尾拓量"],"usage":"cd ABA自动词库Skills\npip install -r requirements.txt\n\npython demo/make_demo_aba.py          # 造一份演示用 ABA 数据（合成数据）\npython run.py \\\n  --aba-dir ./demo/aba \\\n  --asins   ./demo/asins.txt \\\n  --target  B0DEMOTGT1 \\\n  --listing-json ./demo/listing.json \\\n  --provider mock \\\n  --out ./成品_演示词表.xlsx\ncp .env.example .env      # 填上 OPENROUTER_API_KEY=sk-or-...\npython run.py \\\n  --aba-dir   ~/Downloads/aba_reports \\\n  --asins     ./asins.txt \\\n  --target    B0XXXXXXXX \\\n  --provider  openrouter \\\n  --out       词表.xlsx\n【第 1 步】用 DuckDB 把 ABA 数据装进去\n  ✅ ABA_US_2026-08-07.csv  区间 2026-08-01~2026-08-07  → 周标签 2026-08-07  2,7xx,xxx 行\n  📦 库内合计 3,2xx,xxx 行 / 12 周\n【第 2 步】ASIN 反向命中搜索词（3 个竞品 ASIN）\n   扫描 1,2xx,xxx 个词 / 12 周 → 命中 360 个词\n【第 3 步】拿目标 ASIN 的 Listing 当打分基准\n   五点 8 条 ｜ 描述 1,240 字\n【第 4 步】Jev 打分 + 分类（1–10 分 / 6 类词）\n  📊 强相关（≥8 分）187 个 ｜ 竞品品牌词（可做否定）37 个\n  💰 输入 xxx,xxx token ≈ $0.0xxxxx\n✅ 词表已导出：词表.xlsx\n① DuckDB 装载  →  ② ASIN 反向命中  →  ③ 爬 Listing  →  ④ Jev 打分 + 分类  →  Excel\npython tests/test_pipeline.py      ","docs":[],"scripts":["run.py"],"files":[],"nested":[],"has_skill_md":false,"has_readme":true,"has_run":true,"installed_dir":"aba-keyword-miner","embedded":true,"name_en":"aba-keyword-miner","desc":"","merged":["词库搭建（模板 + 技能包）"]},{"pack":"amazon-pd-analysis-26-skill.zip","rel":"skills汇总/amazon-pd-analysis-26-skill.zip","size_kb":14.9,"docs":["amazon-pd-analysis-26/SKILL.md"],"scripts":["amazon-pd-analysis-26/generate_report.py"],"files":["amazon-pd-analysis-26/generate_report.py","amazon-pd-analysis-26/SKILL.md"],"nested":[],"usage":"~/.cursor/skills/amazon-pd-analysis-26/generate_report.py\npython ~/.cursor/skills/amazon-pd-analysis-26/generate_report.py \\\n  --st_file   \"<ST_FILE>\" \\\n  --camp_file \"<CAMP_FILE>\" \\\n  --pd_start  \"<PD_START>\" \\\n  --pd_end    \"<PD_END>\" \\\n  --pre_days  <PRE_DAYS> \\\n  --output_dir \"<OUTPUT_DIR>\"\npip install nbformat","about":"Prime Day 大促结束后，把后台导出的搜索词报表和广告活动报表交给它，它会自动对比大促前后的表现，告诉你哪些词和大促期间值得复盘、哪些广告表现异常、下一轮大促该怎么调整，输出一份完整的复盘报告。","outputs":"【Step 3：确认输出】 脚本完成后，输出目录应包含： 文件 内容 PD daily metrics trend.png Part 1：每日 CTR/CPC/CVR/Orders/Sales/ACoS 趋势 PD converting terms overview.png Part 2：出单词数量变化 PD converting terms comparison.png Part 2：新/旧出单词表现对比 PD new terms characteristics.png Part 4：全新出单词特征气泡图 PD match type comparison.png Part 5：匹配方式指标对比 PD match type orders pie.png Part 5：匹配方式 Orders 占比 PD match type lift heatmap.png Part 5：匹配方式变化率热力图 PD hourly comparison.png Part 3：小时级表现对比 PD hourly lift heatmap.png Part 3：小时级变化率热力图 PD analysis report.txt 全部文字总结报告 PD Analysis <pd start .ipynb 可再次运行的 Jupyter Notebook 向用户展示 PD analysis report.txt 的内容，并说明各图表文件的位置。","name_en":"amazon-pd-analysis-26","desc":"亚马逊 Prime Day (PD) 广告复盘分析。当用户提供 Sponsored Products Search Term Report（日维度 xlsx/csv）和 Campaign Report（Hourly 维度 csv）时，自动生成完整的 PD vs 前N天对比分析，输出 9 张图表、文字总结报告和可运行的 Jupyter Notebook。Use when the user provides Amazon PD / Prime Day search term report and campaign hourly report and asks for performance analysis, recap, or review.","name":"Prime Day 广告复盘","cat":"广告报表 · 预算","tagline":"PD vs 前 N 天对比，自动出 9 张图表和文字复盘","inputs":["SP 搜索词报表（日维度）：广告后台 → 报表中心 → 搜索词报告，日期选 Prime Day 当天，导出 xlsx/csv。报表内容很多，不需要粘贴内容：直接【上传文件】，或【粘贴文件在本机的完整路径】（如 C:/Users/你/Desktop/xxx.csv）即可","Campaign 报表（小时维度）：广告后台 → 报表中心 → 广告活动报告，粒度选小时，导出 csv。报表内容很多，不需要粘贴内容：直接【上传文件】，或【粘贴文件在本机的完整路径】（如 C:/Users/你/Desktop/xxx.csv）即可","Prime Day 起止日期（如 6月23日-26日），直接文字说明即可"],"outputs_list":["9 张图表","PD 复盘结论"],"tags":["Prime Day","复盘","图表"],"has_skill_md":true,"has_readme":false,"has_run":false,"installed_dir":"","installed":false},{"pack":"Prompts报表_五把刀_Skills_v1.0.zip","rel":"skills汇总/Prompts报表_五把刀_Skills_v1.0.zip","size_kb":836.2,"docs":["lingfei-amazon-prompts-report/README.md","lingfei-amazon-prompts-report/SKILL.md"],"scripts":["lingfei-amazon-prompts-report/scripts/analyze_prompts_report.py","lingfei-amazon-prompts-report/scripts/build_figures.py","lingfei-amazon-prompts-report/scripts/make_demo_report.py"],"files":["lingfei-amazon-prompts-report/README.md","lingfei-amazon-prompts-report/SKILL.md","lingfei-amazon-prompts-report/references/article-skeleton.md","lingfei-amazon-prompts-report/references/intent-taxonomy.md","lingfei-amazon-prompts-report/references/judgment-rules.md","lingfei-amazon-prompts-report/references/voice-lingfei.md","lingfei-amazon-prompts-report/references/worked-example.md","lingfei-amazon-prompts-report/examples/prompts.csv","lingfei-amazon-prompts-report/examples/report.md","lingfei-amazon-prompts-report/examples/figures/fig01_rows_vs_prompts.png","lingfei-amazon-prompts-report/examples/figures/fig02_concentration.png","lingfei-amazon-prompts-report/examples/figures/fig03_intent.png","lingfei-amazon-prompts-report/examples/figures/fig04_quadrant.png","lingfei-amazon-prompts-report/examples/figures/fig05_features.png","lingfei-amazon-prompts-report/examples/figures/fig06_quadrant_sales.png","lingfei-amazon-prompts-report/examples/figures/fig07_pipeline.png","lingfei-amazon-prompts-report/scripts/analyze_prompts_report.py","lingfei-amazon-prompts-report/scripts/build_figures.py","lingfei-amazon-prompts-report/scripts/make_demo_report.py","lingfei-amazon-prompts-report/templates/article-template.md"],"nested":[],"usage":"# 1) 造一份同结构的合成报表（547 行 / 311 条提问，含四类典型病态）\npython3 scripts/make_demo_report.py --out /tmp/demo/demo.xlsx\n\n# 2) 分析\npython3 scripts/analyze_prompts_report.py --input /tmp/demo/demo.xlsx --out-dir /tmp/demo/out\n\n# 3) 出图\npython3 scripts/build_figures.py --analysis /tmp/demo/out/analysis.json \\\n        --items /tmp/demo/out/prompts.csv --out-dir /tmp/demo/out/figures\nrows=547 prompts=311 spend=2144.37 sales=4666.88 acos=45.9%\nwritten: /tmp/demo/out/analysis.json /tmp/demo/out/report.md /tmp/demo/out/prompts.csv\nwrote /tmp/demo/out/figures/fig01_rows_vs_prompts.png\n...\npython3 scripts/analyze_prompts_report.py --input report.xlsx --out-dir out\n# 阈值按客户目标线改；曝光阈值给数字或 median\npython3 scripts/analyze_prompts_report.py --input report.xlsx --out-dir out \\\n        --imp-threshold 3000 --acos-target 0.30\npython3 scripts/build_figures.py --analysis out/analysis.json --items out/prompts.csv --out-dir out/figures\nout/report.md（读数）\nout/prompts.csv（名单）\nout/figures/*.png（7 张）\n文章 md / 飞书文档","about":"把亚马逊的 AI 购物提问报表（Alexa/Rufus 报告）直接读成结论：帮你找到曝光和销售不匹配的商品、判断哪些问题该通过改商品页来承接，最后连一篇可发布的公众号分析文章都帮你写好。","outputs":"【输出的三份东西】 文件 给谁 内容 out/report.md 你自己 八节读数：体检 / 集中度 / 意图分层 / 四象限 / 文本特征 / 结构 / 极值样本 / 数据质量。 只有数字和口径，没有结论 out/prompts.csv 执行的人 每条提问一行：曝光、点击、CTR、花费、销售、ACOS、意图组、所属象限。 这就是优化名单 out/analysis.json 后续脚本 全部读数，出图与二次计算都读它 判断在哪做？在 SKILL.md 和 references/judgment-rules.md 里。 引擎只交出读数 —— 它不会替你下\"这个账户有问题\"的结论，那需要人看。 --- 【7. 交付】 out/report.md（读数） out/prompts.csv（名单） out/figures/ .png（7 张） 文章 md / 飞书文档","name_en":"lingfei-amazon-prompts-report","desc":"- 把亚马逊 Sponsored Products Prompts 报表（Alexa / Rufus / AI 购物提问报告）算成结论，再写成一篇能发的公众号文章。 触发：用户甩来 Prompts report / 提示词报告 / Alexa 广告数据报告 / AI 购物提问报表，说「分析一下」「拆一下这张表」 「写篇公众号」「这个报表怎么看」；或提到「五把刀」五步分析法。含可跑的分析引擎（体检 / 集中度 / 意图分层 / 四象限 / 文本特征）、出图脚本（Apollo 白底极简 10.5pt 口径）、文章骨架模板、凌飞口吻规则与成稿结构提要。 一句话：报表进，五把刀 + 一份名单 + 一篇能发的文章出。","name":"Prompts 报表 · 五把刀","cat":"广告报表 · 预算","tagline":"把 SP Prompts（Alexa / Rufus 提问）报表算成结论，再写成能发的公众号文章","inputs":["SP Prompts 报表（也叫 Alexa/Rufus 提问报表）：广告后台 → 报表中心 → Sponsored Products Prompts report，导出 xlsx/csv。报表内容很多，不需要粘贴内容：直接【上传文件】，或【粘贴文件在本机的完整路径】（如 C:/Users/你/Desktop/xxx.csv）即可"],"outputs_list":["五把刀结论","公众号文章","图表"],"tags":["Prompts","Alexa","内容"],"installed":true,"has_skill_md":true,"has_readme":true,"has_run":false,"installed_dir":"lingfei-amazon-prompts-report"},{"pack":"amazon-targeting-structure-report","rel":"~/.workbuddy/skills/amazon-targeting-structure-report","size_kb":27.1,"docs":["SKILL.md"],"scripts":["scripts/run_targeting_structure_report.py"],"files":["INSTALL.txt","SKILL.md","scripts/run_targeting_structure_report.py"],"nested":[],"name_en":"SP 广告投放结构分析","desc":"- Builds Amazon Sponsored Products targeting structure analysis from Advertised Product Report and Targeting Report (Excel). Produces Markdown report, UTF-8 CSV with per-targeting labels and bid suggestions, and a styled text summary. Use when the user provides Sponsored Products Advertised product report.xlsx, Sponsored Products Targeting report.xlsx, ASIN LIST, TARGET ACOS, or AVG CLICKS PER ORDER, or asks for targeting structure / 投放结构 / 核心流量 protection / 分层标签 reports.","about":"把亚马逊商品推广的两份后台报表（广告产品报表 + 投放报表）交给它，它会自动给每条投放打上分层标签（比如核心流量、防守、测试），并给出调价建议，生成一份让你一眼看清广告结构的分析报告。","outputs":"","usage":"python \"<skill_dir>/scripts/run_targeting_structure_report.py\" \\\n     --advertised-product \"<AP_REPORT.xlsx>\" \\\n     --targeting \"<TARGETING_REPORT.xlsx>\" \\\n     --asin <ASIN1> [--asin <ASIN2> ...] \\\n     --target-acos <0.15> \\\n     --avg-clicks-per-order <7> \\\n     --out-dir \"<输出目录>\"","has_skill_md":true,"has_readme":false,"has_run":false,"installed":true,"installed_dir":"amazon-targeting-structure-report","from_installed":true,"note":"说明取自本机已安装的 SKILL.md；F 盘原始资料包受平台安全策略限制，文件内容无法读取。","name":"SP 广告投放结构分析","cat":"广告报表 · 预算","tagline":"用广告商品报表 + Targeting 报表拆出投放结构问题与逐词调整建议","inputs":["Advertised Product Report（广告商品报表，Excel）：广告后台 → 报表中心导出。报表内容很多，不需要粘贴内容：直接【上传文件】，或【粘贴文件在本机的完整路径】（如 C:/Users/你/Desktop/xxx.csv）即可","Targeting Report（投放报表，Excel）：广告后台 → 报表中心导出。报表内容很多，不需要粘贴内容：直接【上传文件】，或【粘贴文件在本机的完整路径】（如 C:/Users/你/Desktop/xxx.csv）即可","可选：ASIN 清单、目标 ACOS、每单平均点击数（文字说明即可）"],"outputs_list":["Markdown 分析报告","逐 targeting CSV","结构性问题与动作清单"],"tags":["SP","targeting","投放结构"]},{"pack":"SP曝光份额报表分析_Skill包.zip","rel":"skills汇总/SP曝光份额报表分析_Skill包.zip","size_kb":38.2,"docs":["SP曝光份额Skill包/README.md","SP曝光份额Skill包/SKILL.md"],"scripts":["SP曝光份额Skill包/scripts/sp_search_term_is_analyze.py","SP曝光份额Skill包/templates/build_figures.example.py","SP曝光份额Skill包/templates/qa_render.py"],"files":["SP曝光份额Skill包/README.md","SP曝光份额Skill包/SKILL.md","SP曝光份额Skill包/references/feishu-delivery.md","SP曝光份额Skill包/references/methodology.md","SP曝光份额Skill包/references/pitfalls.md","SP曝光份额Skill包/references/report-and-writing.md","SP曝光份额Skill包/scripts/sp_search_term_is_analyze.py","SP曝光份额Skill包/templates/build_figures.example.py","SP曝光份额Skill包/templates/qa_render.py","SP曝光份额Skill包/templates/rebuild_all.sh","SP曝光份额Skill包/templates/report_template.md"],"nested":[],"usage":"cp -r ~/Desktop/SP曝光份额Skill包 ~/.hermes/skills/domain/sp-impression-share-report\npython3 scripts/sp_search_term_is_analyze.py \"<报告.csv>\" --check\npython3 scripts/sp_search_term_is_analyze.py \"<报告.csv>\" --out \"<输出目录>\"\nSP曝光份额Skill包/\n├── SKILL.md                              ← 主文件（触发条件 + 三步流程 + 红线）\n├── references/\n│   ├── methodology.md                    ← 四层框架 / 三问 / 四原型 / 五步 / 证据分级\n│   ├── pitfalls.md                       ← 字段坑 / 透视顺序 / 措辞纪律 / 红线\n│   ├── report-and-writing.md             ← 报告骨架 + 公众号写法（含\"去 AI 感\"密度指标）\n│   └── feishu-delivery.md                ← 飞书 docx 建/改/换图（含 7 个实测坑）\n├── scripts/\n│   └── sp_search_term_is_analyze.py      ← 分析引擎（已验证跑通，276→319 行）\n└── templates/\n    ├── report_template.md                ← 交付报告骨架（填空即用）\n    ├── build_figures.example.py          ← 白底极简出图脚本（真实跑通过的 7 张图）\n    ├── qa_render.py                      ← 渲染质检（越界 / 压页脚 / 段内文字裁切）\n    └── rebuild_all.sh                    ← 一键：出图 → 质检\npython3 scripts/sp_search_term_is_analyze.py \"<报告.csv>\" --out \"<输出目录>","about":"把亚马逊搜索词展示量份额报告交给它，它会自动核对数据、做词级透视、检查哪些词投过头或投得不够，把词按四种典型打法分组，最终产出一份可以直接发布的数据分析文章和配图。","outputs":"【第 3 步 · 交付】 交付物 规范 完整结论.md 骨架见 templates/report template.md 图表 走渲染管线（HTML+SVG→Chromium 2x PNG）， 不用 AI 生图 ；风格见 §6 飞书文档 正文 + 真表格 + 配图插到对应位置；见 references/feishu-delivery.md 公众号文章 只在用户要发文时做 ，写法纪律见 references/report-and-writing.md --- 【7. 交付纪律】 - 测试/手动运行先发私聊 ，推群必须显式批准 - 报告一律 用北京时间 ，未来日期自动过滤 - 结论只留 表内直证读数 ；缺数据推断（毛利/归因/情景） 不入结论 ，只进\"边界\"章节 - 别急着堆图表 —— 先把业务逻辑和边界讲清，确认了再出成品 - 给公众号用时要 脱敏 ：搜索词统一 KW1/KW2/KW3 ，类目降到品类层级， 不暴露任何产品词 （中英文都不行） ---","name_en":"sp-impression-share-report","desc":"把 Amazon SP「搜索词曝光份额报表」(Sponsored Products Search Term Impression Share Report) 自动处理成完整分析报告 —— 词级透视、反推曝光池、覆盖率体检、四原型分组、证据分级，并产出可发布的公众号文章 + 白底极简配图 + 飞书文档。触发词：曝光份额报表 / impression share report / IS 报告 / 话语权体检 / 反推大盘 / Search Term Impression Share。","name":"SP 曝光份额报表分析","cat":"广告报表 · 预算","tagline":"搜索词曝光份额报表 → 词级透视、反推曝光池、四原型分组、证据分级","inputs":["SP 搜索词曝光份额报表（Search Term Impression Share）：广告后台 → 报表中心导出 csv。报表内容很多，不需要粘贴内容：直接【上传文件】，或【粘贴文件在本机的完整路径】（如 C:/Users/你/Desktop/xxx.csv）即可"],"outputs_list":["完整分析报告","公众号文章","配图 / 飞书文档"],"tags":["曝光份额","SP","报告"],"installed":false,"has_skill_md":true,"has_readme":true,"has_run":false,"installed_dir":""},{"pack":"sqp-brand-analysis","rel":"~/.workbuddy/skills/sqp-brand-analysis","size_kb":36.7,"docs":["SKILL.md"],"scripts":["scripts/sqp_report.py"],"files":["SKILL.md","scripts/sqp_report.py"],"nested":[],"name_en":"SQP 品牌搜索分析","desc":"Generates a full Amazon SQP (Search Query Performance) brand analysis from weekly CSV exports. Produces CSV files, a PNG trend chart, and a complete Markdown report with all data tables embedded. Use when the user provides Amazon SQP CSV files, asks for brand search-term analysis, week-over-week comparison, high-conversion term detection, or trend charts across weeks.","about":"把亚马逊 SQP（品牌搜索词表现）周报 CSV 交给它，它会自动算出每个搜索词的转化表现、找出高转化但流量还没吃满的词、画出逐周趋势图，最后生成一份完整的数据报告，帮你决定哪些词值得加大投入。","outputs":"","usage":"pip install pandas matplotlib\npython ~/.cursor/skills/sqp-brand-analysis/scripts/sqp_report.py \\\n  --input \"path/to/SQP/*.csv\" \\\n  --output \"./sqp_output/\"","has_skill_md":true,"has_readme":false,"has_run":false,"installed":true,"installed_dir":"sqp-brand-analysis","from_installed":true,"note":"说明取自本机已安装的 SKILL.md；F 盘原始资料包受平台安全策略限制，文件内容无法读取。","name":"SQP 品牌搜索分析","cat":"广告报表 · 预算","tagline":"用 SQP 周报 CSV 生成完整品牌搜索分析：指标表、趋势图、报告","inputs":["SQP 周度报表：卖家后台 → 品牌 → 分析与增长 → 搜索词表现(Search Query Performance)，按周导出 CSV（可多周多个文件）。报表内容很多，不需要粘贴内容：直接【上传文件】，或【粘贴文件在本机的完整路径】（如 C:/Users/你/Desktop/xxx.csv）即可"],"outputs_list":["指标 CSV","PNG 趋势图","完整 Markdown 报告"],"tags":["SQP","品牌搜索","报表"]},{"pack":"targeting-cr-forecast-skill-v1.0.1.zip","rel":"skills汇总/targeting-cr-forecast-skill-v1.0.1.zip","size_kb":17.3,"docs":["targeting-cr-forecast/README.md","targeting-cr-forecast/SKILL.md"],"scripts":["targeting-cr-forecast/scripts/forecast_cr.py"],"files":["targeting-cr-forecast/requirements.txt","targeting-cr-forecast/install.sh","targeting-cr-forecast/README.md","targeting-cr-forecast/scripts/forecast_cr.py","targeting-cr-forecast/SKILL.md"],"nested":[],"usage":"cr_x(t) = sum(orders, t-x+1 .. t) / sum(clicks, t-x+1 .. t)     # 窗口点击为 0 时未定义(NaN)，不是 0\n用 cr_x(t-1) ... cr_x(t-K) 预测 cr_x(t+1)\n# 先自检依赖；$HOME 在 macOS 上展开为 /Users/<你的账户>\n\"$HOME/anaconda3/bin/python\" scripts/forecast_cr.py --check-env\n\"$HOME/anaconda3/bin/python\" scripts/forecast_cr.py \\\n  \"<你的 targeting report>.xlsx\" \\\n  --window 7 --lags 14 --out ./cr_forecast_out\n./install.sh project     # 装到当前目录的 .dsh/skills\n./install.sh user        # 装到 ~/.dsh-beta/skills（跨项目可用；Stable 版请改 ~/.dsh）\ncr_x(t) = sum(orders, t-x+1 .. t) / sum(clicks, t-x+1 .. t)     # 窗口点击为 0 时未定义(NaN)，不是 0\n用 cr_x(t-1) ... cr_x(t-K) 预测 cr_x(t+1)\n\"$HOME/anaconda3/bin/python\" \"<skill-dir>/scripts/forecast_cr.py\" --check-env\n\n\"$HOME/anaconda3/bin/python\" \"<skill-dir>/scripts/forecast_cr.py\" \"<report.xlsx>\" \\\n  --window 7 --lags 14 --out <outdir>","about":"帮你预测每条广告投放未来的转化率。它用历史广告数据训练预测模型，比通用的时间序列工具更准，可以提前知道哪些投放值得继续投、哪些大概率转不动，作为调整预算的参考。","outputs":"【输出】 文件 内容 <outdir /predictions <level w<x .csv 每个序列一行： cr last window （当前窗口观测值）、 cr pred persistence 、 cr pred model 、 cr pred recommended 、 source 、 low confidence 、 n valid windows 、 clicks last window <outdir /summary.json 全部诊断：列识别结果、日期范围、窗口统计、覆盖率、样本量、验证指标、Top10、状态 --json 可让 stdout 直接输出 JSON 摘要，便于程序化读取。 【交付】 把预测 CSV 用 present 给用户；同时在回复里给出最小结论集：序列数 + 覆盖率、验证集上模型 vs baseline 的 RMSE 与技能、推荐列来源、低置信度占比、Top-N 预测。如果 low confidence 占比过高，先给出粒度或口径的改进建议，再给数字。","name_en":"targeting-cr-forecast","desc":"Forecast the next sliding-window conversion rate (CVR) for every targeting in an Amazon Ads Sponsored Products daily targeting report (.xlsx/.csv). Use whenever a targeting/keyword report is supplied and the user asks for the next x-day rolling conversion rate, e.g. \"预估下一个7天的转化率\", \"滚动转化率预测\", \"滑动窗口转化率\", \"conversion rate forecast\", \"rolling CVR\", \"CVR prediction\". Pools one gradient-boosted model across targeting keys (Campaign+Ad Group+Targeting+Match) with a mandatory persistence baseline, spend-coverage reporting, and low-confidence flags.","name":"投放 CVR 预测","cat":"广告报表 · 预算","tagline":"按滑动窗口预测每个 targeting 下一期转化率，提前判断该加还是该砍","inputs":["SP 投放层日报表（Targeting Report，日维度 xlsx/csv）：广告后台 → 报表中心导出，历史越长越好。报表内容很多，不需要粘贴内容：直接【上传文件】，或【粘贴文件在本机的完整路径】（如 C:/Users/你/Desktop/xxx.csv）即可"],"outputs_list":["每个 targeting 的 CVR 预测","调价 / 否词建议"],"tags":["CVR","预测","targeting"],"installed":true,"has_skill_md":true,"has_readme":true,"has_run":false,"installed_dir":"targeting-cr-forecast"},{"pack":"amazon-conversion-path-budget.zip","rel":"skills汇总/amazon-conversion-path-budget.zip","size_kb":21.4,"docs":["amazon-conversion-path-budget/README.md","amazon-conversion-path-budget/SKILL.md"],"scripts":["amazon-conversion-path-budget/scripts/analyze_conversion_path.py"],"files":["amazon-conversion-path-budget/references/judgment-rules.md","amazon-conversion-path-budget/references/sample-output.md","amazon-conversion-path-budget/references/report-columns.md","amazon-conversion-path-budget/README.md","amazon-conversion-path-budget/scripts/analyze_conversion_path.py","amazon-conversion-path-budget/SKILL.md"],"nested":[],"usage":"pip install openpyxl\npython scripts/analyze_conversion_path.py 你的报表.xlsx\npython scripts/analyze_conversion_path.py 你的报表.xlsx --out 分析结果.xlsx\n路径 298 条 | 销售 $5,239,589 USD | 订单 125,451 | 客单价 41.8 | 新客占比 71.9%\n\n【一】集中度：钱压在几条路径上\n  第 1 条 41.3% | 前 2 条 62.5% | 前 4 条 83.3%\n  累计到 50% 需 2 条，到 80% 需 4 条\n  长尾（单条 < 0.05%）253 条，合计 1.5%\n\n【三】A 跑了之后接什么（首→次转移）\n  A        → B          路径          销售      占比     客单价\n  SP       DSP          20  $1,226,524   23.4%    43.3\n  ...\n\n【六】判断与动作\n  !! 结构高度集中：前 2 条路径占 62.5%……\n     → 主力按护栏管理，增量放到新位置，不动存量。\n  !  DSP 是助攻型：出现在 75.5% 的路径里，自己开场只占 23.2%……\n     → 按覆盖考核，不用末次点击 ROI 判去留。\nTH = {\n    \"concentrated_top2\": 0.60,      # 前 2 条占比超过 → 结构高度集中\n    \"assist_gap\": 0.15,             # 覆盖率 − 开场率 超过 → 助攻型\n    \"companion_ratio\": 5.0,         # 覆盖/销售 比值超过 → 伴随型\n    \"long_chain_gap\": 0.05,         # 长链路新客低于整体这么多 → 偏收割\n    \"main_transfer\": 0.10,          # A→B 占总额超过 → 主要转移关系\n    ...\n}\n├── SKILL.md                       # 完整方法说明（判断口径、硬前提、坑）\n├── README.md                      # 本文件\n├","about":"把亚马逊后台导出的转化路径报告交给它，它会告诉你：广告预算现在压在哪几条路径上、哪个广告负责开场哪个负责助攻、品牌广告和展示广告各占多大份量，最后直接给出\"下一笔预算该给谁\"的建议。","outputs":"【输出长什么样】 路径 298 条 销售 $5,239,589 USD 订单 125,451 客单价 41.8 新客占比 71.9% 【一】集中度：钱压在几条路径上 第 1 条 41.3% 前 2 条 62.5% 前 4 条 83.3% 累计到 50% 需 2 条，到 80% 需 4 条 长尾（单条 < 0.05%）253 条，合计 1.5% 【三】A 跑了之后接什么（首→次转移） A → B 路径 销售 占比 客单价 SP DSP 20 $1,226,524 23.4% 43.3 ... 【六】判断与动作 !! 结构高度集中：前 2 条路径占 62.5%…… → 主力按护栏管理，增量放到新位置，不动存量。 ! DSP 是助攻型：出现在 75.5% 的路径里，自己开场只占 23.2%…… → 按覆盖考核，不用末次点击 ROI 判去留。 完整样例见 examples/sample output.md 。 【六块输出怎么读】 一 · 集中度 —— 前 1 / 2 / 4 条路径各占多少，累计到 50%、80% 需要几条，长尾多少条。 用法：找到你的「管理边界」。边界以内逐条分析，边界以外只监控合计占比，不要试图优化单条。 二 · 首触点（谁在开场） —— 每个广告产品作为第一个触点的路径数、销售额、客单价。 用法：这是预算的第一顺位依据。开场占比高、客单价不掉的那个，是基本盘。 三 · A → B 转移 —— 首触点是 A、第二个触点是 B 的组合，各自的销售额、占比、客单价。","name_en":"amazon-conversion-path-budget","desc":"用亚马逊「转化路径报告」(Conversion Path Report) 算广告预算该怎么分——集中度、谁在开场、A 之后该接谁、触点数量分层、伴随型广告识别，输出判断与动作。当用户拿到转化路径报表要分析、要判断 SP/SB/SD/DSP 各分多少预算、或问「我的钱压在谁身上 / 打了什么广告之后该多打哪些」时用。","name":"转化路径 · 广告预算分配","cat":"广告报表 · 预算","tagline":"用转化路径报告算 SP/SB/SD/DSP 各该分多少钱：谁开场、A 之后接谁","inputs":["转化路径报告：广告后台 → 报表中心 → 报表类型选 Conversion path，时间范围 30 天，导出 xlsx/csv。报表内容很多，不需要粘贴内容：直接【上传文件】，或【粘贴文件在本机的完整路径】（如 C:/Users/你/Desktop/xxx.csv）即可"],"outputs_list":["集中度与触点分层","伴随型广告识别","预算分配动作清单"],"tags":["转化路径","预算","归因"],"installed":true,"has_skill_md":true,"has_readme":true,"has_run":false,"installed_dir":"amazon-conversion-path-budget"},{"pack":"A9(7).zip","rel":"skills汇总/A9(7).zip","size_kb":5,"docs":[],"scripts":[],"files":["A9/skill.zip"],"nested":[{"name":"A9/skill.zip","entries":["amazon-listing-intent-auditor/agents/openai.yaml","amazon-listing-intent-auditor/references/checklist.md","amazon-listing-intent-auditor/SKILL.md"]}],"usage":"broad category\n  -> attribute/use-case modifier [specification]\n  -> brand/model/variant [equivalence]\n  -> accessory/refill/add-on [complement]\n# Amazon Listing Intent Audit: [product]\n\n## Executive summary\n[3-5 bullets: biggest opportunities and risks]\n\n## Search path map\n[2-4 paths using arrows and intent labels]\n\n## Scorecard\n| Dimension | Score | Why it matters | Main fix |\n|---|---:|---|---|\n\n## Page-level findings\n### Title\n### Images\n### Bullets\n### A+ / Description\n### Backend keywords\n### Variations\n### Reviews / Q&A\n### Ads keyword structure\n\n## Priority fixes\n1. [highest impact action]\n2. [second action]\n3. [third action]\n\n## Keyword and content recommendations\n### Generalization terms\n### Specification terms\n### Equivalence terms\n### Substitution terms\n### Complement terms\n### Irrelevant-filtering phrases\n\n## 7-day action plan\n[concrete steps the seller can implement immediately]","about":"检查你的亚马逊 Listing 能不能被搜到、能不能接住买家的下一步搜索。它会从\"关键词能不能被检索\"和\"买家搜索意图路径能不能被承接\"两个角度给 Listing 打分并指出问题，而不只是堆关键词。","outputs":"【Output format】 Use this structure unless the user requests another format:","name_en":"amazon-listing-intent-auditor","desc":"audit and improve amazon marketplace listing pages through intent-aware search path analysis. use when reviewing amazon listings, product detail pages, seo copy, titles, bullet points, backend keywords, a+ content, images, variation strategy, cross-sell opportunities, or advertising keyword structure using six query intent types: specification, generalization, equivalence, substitution, complement, and irrelevant. useful for sellers who want a checklist, scoring report, optimization roadmap, or search path map for a product listing.","name":"A9 搜索意图审计","cat":"Listing · AI 搜索优化","tagline":"按 A9 六类搜索意图审计 Listing 覆盖度，找出最拖后腿的意图","inputs":["Amazon 商品链接 / ASIN"],"outputs_list":["六类意图打分","搜索路径图","补齐建议"],"tags":["A9","意图","审计"],"installed":true,"has_skill_md":true,"has_readme":false,"has_run":false,"installed_dir":"amazon-listing-intent-auditor"},{"pack":"AI 关联流量打造skill.zip","rel":"skills汇总/AI 关联流量打造skill.zip","size_kb":3.7,"docs":["ecommerce-related-traffic-optimizer/SKILL.md"],"scripts":[],"files":["ecommerce-related-traffic-optimizer/SKILL.md","ecommerce-related-traffic-optimizer/references/report-template.md","ecommerce-related-traffic-optimizer/agents/openai.yaml"],"nested":[],"usage":"","about":"给一个产品链接或 ASIN，它会分析你的 Listing 在关联流量、关键词权重、内容相关性上的问题，给出优化报告，帮你吃下商品页上\"看了又看\"\"相关推荐\"这些免费流量，而不是孤立地堆关键词。","outputs":"【Output Format】 Use this report structure unless the user asks for another format: 1. Executive summary - current traffic problem - biggest keyword-weight opportunity - top 3 actions 2. Product positioning diagnosis - product category and buyer intent - target buyer segments - core selling angles - likely conversion blockers 3. Associated traffic map - specification paths - generalization paths - equivalence paths - substitution paths - complement paths - irrelevant/negative paths 4. Keyword matrix - table columns: keyword cluster, keyword examples, intent type, funnel stage, listing placement, ad placement, priority, notes - include negative keywords and risky keywords separately 5. Listing","name_en":"ecommerce-related-traffic-optimizer","desc":"amazon marketplace listing and traffic optimization workflow for products identified by amazon product links or asins. use when auditing an amazon listing, building a keyword matrix, improving title/bullets/a+ content, designing ppc/ad keyword structure, mapping associated traffic paths, or creating an execution checklist to increase keyword relevance, search weight, and conversion through related traffic signals.","name":"AI 关联流量打造","cat":"Listing · AI 搜索优化","tagline":"按商品链接 / ASIN 做关联流量与 Listing 优化的成套工作流","inputs":["Amazon 商品链接或 ASIN"],"outputs_list":["关联流量诊断","优化动作清单"],"tags":["关联流量","Listing"],"has_skill_md":true,"has_readme":false,"has_run":false,"installed_dir":"","installed":false},{"pack":"amazon-ai-listing-auditor","rel":"~/.workbuddy/skills/amazon-ai-listing-auditor","size_kb":6.4,"docs":["SKILL.md"],"scripts":[],"files":["SKILL.md","agents/openai.yaml"],"nested":[],"name_en":"Listing AI 就绪度审计（Alexa）","desc":"audit amazon product listings from amazon urls, screenshots, or provided listing text for ai shopping readiness, alexa for shopping question-answer clarity, seo, conversion, and content quality. use when an amazon operator asks to check or optimize a listing, generate a listing scorecard, identify issues, rewrite title bullets description, or create an faq/q&a knowledge base for rufus, alexa, or amazon ai shopping discovery.","about":"检查你的 Listing 在 AI 购物时代（Alexa、Rufus 等 AI 导购）能不能被准确理解和推荐。它会从 URL、截图或文案审计 SEO、转化力和 AI 问答清晰度，输出打分表、问题清单，并帮你改写标题卖点、生成 FAQ。","outputs":"","usage":"","has_skill_md":true,"has_readme":false,"has_run":false,"installed":true,"installed_dir":"amazon-ai-listing-auditor","from_installed":true,"note":"说明取自本机已安装的 SKILL.md；F 盘原始资料包受平台安全策略限制，文件内容无法读取。","name":"Listing AI 就绪度审计（Alexa）","cat":"Listing · AI 搜索优化","tagline":"审 Listing 在 Alexa / AI 购物助手里的问答清晰度、SEO 与转化","inputs":["Amazon 商品链接 / 页面截图","或直接提供 Listing 标题与五点"],"outputs_list":["AI 就绪度打分","问答清晰度问题清单","SEO 与转化改进动作"],"tags":["Alexa","AI 购物","Listing"]},{"pack":"notable-arrivals-checker","rel":"~/.workbuddy/skills/notable-arrivals-checker","size_kb":11.7,"docs":["SKILL.md"],"scripts":[],"files":["SKILL.md","agents/openai.yaml","references/checklist.md"],"nested":[],"name_en":"新品徽章检查（Notable Arrivals）","desc":"\"audit amazon new products for new arrival or notable arrival badge readiness using amazon's official badge logic: time-bound new selection, forecasted customer popularity, objective product-quality analysis, comparison with similar popular items, and ongoing customer feedback or engagement signals. use when a seller asks whether a new asin or listing can qualify for notable arrivals, wants a 100-point score, cold-start plan, listing fixes, keyword plan, seller central export analysis, or article-ready case study about amazon new arrival badges.\"","about":"帮新品卖家判断自己的产品能不能拿到亚马逊\"新品徽章\"（Notable Arrivals）。它按官方徽章逻辑从新品期、预计热度、产品质量、同类对比、买家反馈几个角度打 100 分制分数，并给出拿徽章的冷启动和 Listing 修改方案。","outputs":"","usage":"","has_skill_md":true,"has_readme":false,"has_run":false,"installed":true,"installed_dir":"notable-arrivals-checker","from_installed":true,"note":"说明取自本机已安装的 SKILL.md；F 盘原始资料包受平台安全策略限制，文件内容无法读取。","name":"新品徽章检查（Notable Arrivals）","cat":"Listing · AI 搜索优化","tagline":"按亚马逊官方徽章逻辑审新品是否满足 New / Notable Arrival 条件","inputs":["新品 ASIN","上架时间与类目","近期表现数据"],"outputs_list":["徽章就绪度判定","条件缺口清单","补齐动作"],"tags":["新品","徽章","Notable Arrivals"]},{"pack":"listing-rufus-auditor","rel":"~/.workbuddy/skills/listing-rufus-auditor","size_kb":8.3,"docs":["SKILL.md"],"scripts":[],"files":["SKILL.md","agents/openai.yaml","references/checklist.md"],"nested":[],"name_en":"Rufus 友好度审计","desc":"audit and improve amazon marketplace listing pages for rufus-style ai shopping retrieval. use when reviewing amazon product detail pages, listings, titles, bullets, attributes, images, a+ content, reviews, q&a, variation structure, inventory readiness, launch hygiene, or ai-shopping discoverability. produces intent-aware checks, scoring, issue diagnosis, and seller action plans grounded in retrieval-first, query-planner, placeholder, streaming, and metadata-injection principles from amazon's generative ai product-page patent patterns.","about":"三套 Rufus 审计能力合为一体：① 按 AI 导购检索逻辑给商品页全面打分（标题、五点、属性、图片、A+、问答），出整改清单；② 拿 Rufus 的回答报告对照你的 Listing，找出 AI 推荐时会提到而你没写的缺口并打分；③ 按亚马逊 AI 答案生成逻辑反推，直接给出 Listing 改写建议。让商品页更容易被 AI 导购推荐给买家。","outputs":[],"usage":"","has_skill_md":true,"has_readme":false,"has_run":false,"installed":true,"installed_dir":"listing-rufus-auditor","from_installed":true,"note":"说明取自本机已安装的 SKILL.md；F 盘原始资料包受平台安全策略限制，文件内容无法读取。","name":"Rufus / GEO 全面审计","cat":"Rufus · GEO 优化","tagline":"三合一：AI 检索友好度打分、GEO 缺口对照、答案框架改写，一次审完商品页","inputs":["Amazon 商品页 / Listing 文案"],"outputs_list":["友好度打分","逐项问题","改写建议"],"tags":["Rufus","友好度","Listing"],"merged":["GEO Listing 优化审计","Rufus 答案框架审计"]},{"pack":"rufus-research","rel":"~/.workbuddy/skills/rufus-research","size_kb":31.6,"docs":["SKILL.md"],"scripts":["rufus-run-v2.mjs","scripts/rufus-chrome-session.mjs","scripts/rufus-research-runner.mjs"],"files":["SKILL.md","references/workflow.md","rufus-run-v2.mjs","scripts/rufus-chrome-session.mjs","scripts/rufus-research-runner.mjs"],"nested":[],"name_en":"Rufus 品类调研（浏览器自动化）","desc":"通过 Chrome 浏览器自动化与 Amazon Rufus AI 对话，收集品类用户痛点和需求，生成 Listing 优化 + Rufus GEO 调研报告。 触发条件： - 用户要求\"调研 Rufus\"、\"用 Rufus 分析\"、\"Rufus + [品类]\"、\"收集 Rufus 回答\"、\"调研 [品类] 用户关心什么\" - 用户提供多个问题要求与 Rufus 对话并出报告 - 用户要求\"帮我设计问题\"然后\"和 Rufus 聊\" - 任何需要抓取 Rufus AI 回答的 Amazon 相关调研任务","about":"自动操控浏览器去和亚马逊的 AI 导购 Rufus 对话，批量收集它对某个品类的回答，整理出买家真正关心什么、有哪些痛点，最终生成一份用于优化 Listing 的调研报告。","outputs":"","usage":"scripts/\n├── rufus-chrome-session.mjs   # Chrome CDP 会话封装（launch/navigate/ask）\n└── rufus-research-runner.mjs  # 调研编排器（run 方法即可执行全流程）\nimport { RufusResearchRunner } from './scripts/rufus-research-runner.mjs';\n\nconst runner = new RufusResearchRunner({\n  topic: 'curtain',\n  saveDir: '~/workspace/rufus-curtain-research',\n});\n\nconst questions = [\n  'What are the most important factors when buying curtains for a bedroom?',\n  'What is the difference between blackout and sheer curtains?',\n  'How do I choose the right size curtains for my window?',\n  // ...\n];\n\nconst results = await runner.run(questions);","has_skill_md":true,"has_readme":false,"has_run":false,"installed":true,"installed_dir":"rufus-research","from_installed":true,"note":"说明取自本机已安装的 SKILL.md；F 盘原始资料包受平台安全策略限制，文件内容无法读取。","name":"Rufus 品类调研（浏览器自动化）","cat":"Rufus · GEO 优化","tagline":"Chrome 自动化与 Amazon Rufus 对话，收集品类痛点并出 GEO 调研报告","inputs":["品类词 / 一组想问 Rufus 的问题","已登录的 Chrome 调试会话"],"outputs_list":["Rufus 回答语料","痛点与需求归纳","Listing + GEO 调研报告"],"tags":["Rufus","浏览器自动化","品类调研"]},{"pack":"rufus-listing-probe","rel":"~/.workbuddy/skills/rufus-listing-probe","size_kb":9.1,"docs":["SKILL.md"],"scripts":[],"files":["SKILL.md","agents/openai.yaml","references/question-patterns.md"],"nested":[],"name_en":"Rufus 问题探针生成","desc":"generate up to 10 high-value rufus questions for amazon listing optimization from search terms, title, bullets, and optional category, brand, or competitor context. use when the user wants to probe rufus, reverse-engineer amazon's recommendation logic, improve listings, extract shopper intent, design question sets, or build a reusable question-generation workflow or skill for amazon products.","about":"帮你自动设计一批高质量的提问，去\"试探\"亚马逊 AI 导购 Rufus 会怎么回答、会不会推荐你的产品。只要提供搜索词和 Listing 信息，它就能生成最多 10 个有价值的探测问题，用于优化 Listing。","outputs":"","usage":"","has_skill_md":true,"has_readme":false,"has_run":false,"installed":true,"installed_dir":"rufus-listing-probe","from_installed":true,"note":"说明取自本机已安装的 SKILL.md；F 盘原始资料包受平台安全策略限制，文件内容无法读取。","name":"Rufus 问题探针生成","cat":"Rufus · GEO 优化","tagline":"从搜索词、标题、五点生成最多 10 个高价值 Rufus 问题，验证覆盖缺口","inputs":["搜索词","标题与五点","可选：类目 / 品牌 / 竞品"],"outputs_list":["最多 10 个高价值问题","Listing 覆盖缺口"],"tags":["Rufus","问题探针","搜索词"]},{"pack":"Reddit品类调研Skills_v1.0.zip","rel":"skills汇总/Reddit品类调研Skills_v1.0.zip","size_kb":558.2,"docs":["Reddit品类调研Skills/README.md"],"scripts":["Reddit品类调研Skills/analyze.py","Reddit品类调研Skills/charts.py","Reddit品类调研Skills/collect.py","Reddit品类调研Skills/main.py","Reddit品类调研Skills/report.py","Reddit品类调研Skills/run.py","Reddit品类调研Skills/自检.py"],"files":["Reddit品类调研Skills/README.md","Reddit品类调研Skills/analyze.py","Reddit品类调研Skills/charts.py","Reddit品类调研Skills/collect.py","Reddit品类调研Skills/demo/charts/01_data_scale.png","Reddit品类调研Skills/demo/charts/02_subreddit.png","Reddit品类调研Skills/demo/charts/03_comments.png","Reddit品类调研Skills/demo/charts/04_keywords.png","Reddit品类调研Skills/demo/charts/05_score.png","Reddit品类调研Skills/demo/data.json","Reddit品类调研Skills/demo/成品_stats.json","Reddit品类调研Skills/demo/成品_示例报告.md","Reddit品类调研Skills/main.py","Reddit品类调研Skills/report.py","Reddit品类调研Skills/requirements.txt","Reddit品类调研Skills/run.py","Reddit品类调研Skills/自检.py"],"nested":[],"usage":"pip install -r requirements.txt\npython run.py demo\n# 1) 配代理（本工具不内置任何代理，请用你自己的；能直连外网就跳过）\nexport HTTPS_PROXY=http://127.0.0.1:你的端口\nexport HTTP_PROXY=http://127.0.0.1:你的端口\n\n# 2) 一条命令跑完：采集 → 统计 → 图表 → 报告\npython run.py \"cat food\" --subreddits catfood,CatAdvice,cats,AskVet\n\n# 不想手打社区？用默认通用社区试跑（结论会很浅，见口径①）\npython run.py \"air fryer\" --limit 15 --out ./out\noutput/\n├── data.json     采集的原始数据（帖子+评论+搜索结果）——可再喂给任意 LLM 做提炼\n├── stats.json    统计结果\n├── report.md     数据报告（数据规模/社区分布/评论长尾/词频信号/数据局限）\n└── charts/       5 张白底极简图（数据规模/社区分布/评论长尾/词频/热度）\npython 自检.py     # 离线、不联网、不需要 key\nrun.py              一条命令入口（demo = 离线试跑）\nmain.py             兼容入口（等价 run.py）\ncollect.py          采集：Reddit 归档 API（Arctic Shift）+ 零注册搜索\nanalyze.py          统计：数据规模/社区分布/评论长尾/词频/热度\ncharts.py           出图：5 张白底极简图（中文标题，无中文字体时自动退回英文）\nreport.py           报告：report.md\n自检.py             离线自检\ndemo/\n  data.json         示例数据（猫粮品类实跑）\n  成品_示例报告.md    那次实跑的成品报告\n  成品_stats.json    那次实跑的统计\n  charts/           那次实跑的 5 张图\nrequirements.txt","about":"给一个品类词（比如猫粮、空气炸锅），它会自动去 Reddit 搜集真实用户的讨论，统计大家在抱怨什么、关心什么、常用哪些说法，输出带图表的数据报告，帮你发现亚马逊评论里看不到的真实需求。","outputs":"【② 结果数量自检 —— 防「静默失败」】 文章里的踩坑记录：第一版脚本用 set proxy 设置代理， 全部请求静默失败 —— 返回「0 个帖子」却不报错，差点得出「这个话题没人讨论」的错误结论。 本工具在采集结束时主动检查数量，帖子数为 0 会直接告警。 「话题没人讨论」和「脚本坏了」必须能分开 ，任何采集脚本都要有这一步。 【输出长什么样】 章节 内容 一、数据规模 帖子数 / 评论数 / 总字数 （标题+正文+评论） 二、社区分布 各社区帖子数，看出「讨论最集中在哪」 三、评论长尾 分桶：多数帖子很安静，少数爆款帖承载最深信号 四、词频信号 按「决策 / 痛点 / 价格 / 质量」四个角度分开统计 五、高频词 Top 25 去掉停用词后的客观词频 六、数据局限 口径⑤ 三条，自动写入 ---","name_en":"","desc":"","name":"Reddit 品类调研","cat":"竞品 · 市场洞察","tagline":"一个品类词 → 消费者原话 → 痛点和机会，自动扒帖统计社区分布","inputs":["品类词（如 cat food / air fryer）"],"outputs_list":["真实讨论语料","社区分布统计","痛点与机会点"],"tags":["Reddit","Voice of Customer","调研"],"installed":true,"has_skill_md":false,"has_readme":true,"has_run":true,"installed_dir":"Reddit品类调研Skills"},{"pack":"lingfei-amazon-competitor-library-mining.zip","rel":"skills汇总/lingfei-amazon-competitor-library-mining.zip","size_kb":31.9,"docs":["lingfei-amazon-competitor-library-mining/README.md","lingfei-amazon-competitor-library-mining/SKILL.md"],"scripts":["lingfei-amazon-competitor-library-mining/scripts/build_competitor_lib.py","lingfei-amazon-competitor-library-mining/scripts/crawl_amazon.py","lingfei-amazon-competitor-library-mining/scripts/export_table.py","lingfei-amazon-competitor-library-mining/scripts/run_pipeline.py","lingfei-amazon-competitor-library-mining/scripts/score_competitors.py"],"files":["lingfei-amazon-competitor-library-mining/README.md","lingfei-amazon-competitor-library-mining/SKILL.md","lingfei-amazon-competitor-library-mining/references/crawl-pitfalls.md","lingfei-amazon-competitor-library-mining/references/jev-api.md","lingfei-amazon-competitor-library-mining/references/worked-example-ice-maker.md","lingfei-amazon-competitor-library-mining/scripts/build_competitor_lib.py","lingfei-amazon-competitor-library-mining/scripts/crawl_amazon.py","lingfei-amazon-competitor-library-mining/scripts/export_table.py","lingfei-amazon-competitor-library-mining/scripts/run_pipeline.py","lingfei-amazon-competitor-library-mining/scripts/score_competitors.py"],"nested":[],"usage":"pip install httpx beautifulsoup4 lxml openpyxl\nexport TYPESAFE_API_KEY=你的key        # Jev（TypeSafe System One）决策模型的 key，必填\nexport AMZ_PROXY=http://host:port      # 可选：需要代理才能访问 amazon.com 时设置；不设则直连\npython3 scripts/run_pipeline.py \\\n  --asin B0XXXXXXXX \\\n  --keywords \"countertop ice maker,nugget ice maker,portable ice maker,bullet ice maker,ice maker machine\" \\\n  --bsr-pages 2 --search-pages 5 --enrich 120 --out out\nlingfei-amazon-competitor-library-mining/\n├── SKILL.md                       # 给 AI Agent 读的技能说明\n├── README.md                      # 你正在看的这份\n├── scripts/\n│   ├── crawl_amazon.py            # 抓取层：限速 + 熔断 + 断点续跑 + 三个解析器\n│   ├── build_competitor_lib.py    # 步骤 1–5：建库\n│   ├── score_competitors.py       # 步骤 6：Jev 打分 + 归类 + 备注\n│   ├── export_table.py            # 导出 Excel\n│   └── run_pipeline.py            # 一键跑完\n└── references/\n    ├── jev-api.md                 # Jev API 口径\n    ├── crawl-pitfalls.md          # 反爬与解析坑实测记录\n    └── worked-example-ice-maker.md # 一次完整跑的真实读数基线（拿它对量级 ","about":"给一个自己的产品 ASIN 和几个核心关键词，它会自动找到和你抢同一批搜索流量的对位竞品，每个竞品都附上可核对的判断依据（类目是否一致、标题命中哪些词），帮你建一份可以直接用于盯梢和对标的竞品清单。","outputs":"","name_en":"lingfei-amazon-competitor-library-mining","desc":"\"从一个自家 ASIN 出发，自动搭出「同赛道竞品库」：爬 BSR 榜 + 核心词搜索结果页 → 按 ASIN 去重 → 用 Jev 决策模型逐个打同赛道相关度分并归类。Use when the user says 竞品库 / 竞对库 / 对手库 / 找竞品 / 同赛道竞品 / 竞品筛查 / 竞品名单 / competitor library / 扒竞品。含限速+反爬熔断的抓取层、1-10 相关度打分、6 类归类、Excel 导出。配套 skill： amazon-aba-keyword-mining （管「投什么词」，本 skill 管「跟谁打」）。\"","name":"同赛道竞品库挖掘","cat":"竞品 · 市场洞察","tagline":"从一个自家 ASIN 出发爬 BSR 榜 + 搜索结果页，用 Jev 模型打相关度分并归类","inputs":["自家 ASIN","核心关键词"],"outputs_list":["去重后的竞品库","同赛道相关度评分"],"tags":["竞品库","BSR","相关度"],"installed":true,"has_skill_md":true,"has_readme":true,"has_run":false,"installed_dir":"lingfei-amazon-competitor-library-mining"},{"pack":"xiyou-insight","rel":"~/.workbuddy/skills/xiyou-insight","size_kb":164.9,"docs":["SKILL.md"],"scripts":["scripts/dashboard_generator.py","scripts/data_aggregator.py","scripts/report_generator.py","scripts/scenarios/__init__.py","scripts/scenarios/ad_budget.py","scripts/scenarios/ad_monitoring.py","scripts/scenarios/base.py","scripts/scenarios/competitor_analysis.py","scripts/scenarios/keyword_database.py","scripts/scenarios/new_product.py"],"files":["SKILL.md","_skillhub_meta.json","scripts/dashboard_generator.py","scripts/data_aggregator.py","scripts/report_generator.py","scripts/scenarios/__init__.py","scripts/scenarios/ad_budget.py","scripts/scenarios/ad_monitoring.py","scripts/scenarios/base.py","scripts/scenarios/competitor_analysis.py","scripts/scenarios/keyword_database.py","scripts/scenarios/new_product.py","scripts/scenarios/traffic_gap.py","scripts/workflow.py","scripts/workflow_competitor_analysis.py"],"nested":[],"name_en":"xiyou-insight","desc":"基于西柚洞察MCP的亚马逊竞品分析与广告策略工具。提供7大核心工作场景：实时监控广告投放效果、快速找到高性价比流量缺口、快速拆解对标竞对打法、提升新品推广效率、精准拆解竞品流量以及广告策略、透视竞品广告策略和预算、高效搭建关键词库。适用于亚马逊卖家进行竞品分析、广告优化和关键词研究。","about":"基于西柚洞察数据，帮亚马逊卖家做竞品与广告分析：实时监控广告投放效果、找到高性价比的流量缺口、拆解对标竞品的广告打法和预算结构、高效搭建关键词库，覆盖新品推广到日常投放优化的 7 大常见场景。","outputs":"","usage":"Step 1: 获取ASIN基础信息\n  → get_asin_info(asin)\n  \nStep 2: 查询小时级排名（仅US/UK/DE）\n  → get_asin_keyword_rank_hourly(asin, keyword, date)\n  分析广告排名位置和持续时间\n  \nStep 3: 查询日排名趋势\n  → get_asin_keyword_rank_trends(asin, keyword, start_date, end_date)\n  判断广告投放带动自然排名上升情况\n  \nStep 4: 查询广告投放变化\n  → get_asin_ad_change_trends(asin, start_date, end_date)\n  分析广告活动新增/移除情况\n  \nStep 5: 生成分析报告\n  → 评估广告投放效率，判断是否带来自然排名提升","has_skill_md":true,"has_readme":false,"has_run":false,"installed":true,"installed_dir":"xiyou-insight","from_installed":true,"note":"说明取自本机已安装的 SKILL.md；F 盘原始资料包受平台安全策略限制，文件内容无法读取。","name":"西柚洞察 · 竞品与广告分析","cat":"竞品 · 市场洞察","tagline":"基于西柚洞察 MCP 的 7 大场景：广告监控、流量缺口、竞对拆解、词库搭建","inputs":["竞品 ASIN / 关键词","需已连接西柚洞察 MCP"],"outputs_list":["竞品流量与广告策略拆解","高性价比流量机会","关键词库"],"tags":["西柚","竞品","广告策略"]}]};
+const CAT_COLOR = {
+  '关键词 · ABA 选品':'#2563eb',
+  '广告报表 · 预算':'#d2691e',
+  'Listing · AI 搜索优化':'#7c3aed',
+  '竞品 · 市场洞察':'#0f8a72',
+  '资料与模板':'#64748b'
+};
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const packs = (DATA && DATA.packs) || [];
+const cats = ((DATA && DATA.cats) || []).filter(c => packs.some(p => p.cat === c));
+let state = { q:'', cat:'全部', installedOnly:false, current:null };
+
+function color(cat){ return CAT_COLOR[cat] || '#64748b'; }
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(toast._t); toast._t = setTimeout(()=>t.classList.remove('on'), 1900);
+}
+function copy(text, label){
+  const done = () => toast(label || '已复制到剪贴板');
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallback());
+  } else fallback();
+  function fallback(){
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); }
+    catch(e){ toast('复制失败，请手动全选文本'); }
+    ta.remove();
+  }
+}
+
+/* ---------- 调用指令 ---------- */
+function promptFor(p, extra){
+  const L = [];
+  L.push('请用技能「' + p.name + '」完成下面的任务，直接给出结果，不要只复述指令。');
+  L.push('');
+  if (p.installed_dir) L.push('技能目录：~/.workbuddy/skills/' + p.installed_dir);
+  else L.push('技能包：' + p.rel + (p.has_skill_md ? '（含 SKILL.md）' : '（含 README）') +
+              '\n若本机未安装，请按包内文档的方法执行；缺文件先说明再尽量完成。');
+  L.push('技能包来源：' + p.rel);
+  L.push('');
+  L.push('【我要提供】');
+  (p.inputs || []).forEach(x => L.push('  - ' + x));
+  if (!(p.inputs || []).length) L.push('  - 见技能文档要求');
+  L.push('');
+  if (extra) { L.push(extra); L.push(''); }
+  L.push('【期望产出】');
+  (p.outputs_list || []).forEach(x => L.push('  - ' + x));
+  L.push('');
+  L.push('【任务说明】' + p.tagline);
+  if (p.about) L.push('【背景】' + p.about.slice(0, 260));
+  L.push('');
+  L.push('要求：先确认输入文件是否齐备；数据不足时明确标注哪些是估算；最后给出可直接执行的结论与动作。');
+  return L.join('\n');
+}
+
+/* ---------- 资料准备：输入框 + 本地文件上传 → 带「文件全文」的调用指令 ----------
+   文件只在浏览器内用 FileReader 读取，不上传服务器、不发任何请求。
+
+   官方 workbuddy:// 深链硬限制（已核对安装包内 deeplink 解析代码）：
+     · prompt 超过 8000 字符会被解析时截断
+     · deeplink 总长超过 6000 时官方自己警告「Windows 命令行可能唤起失败」
+     · promptContentBlocks 文本总量同样 8000、最多 50 块
+     · payloadId 一旦出现会忽略其它参数，由桌面端内部 facade 解析，纯静态页无法生成
+   因此「任意大小的完整文件」不能靠深链硬塞。完整内容改由两条无长度上限的通道交付：
+     1) 剪贴板（复制调用指令 / 超限时自动复制）
+     2) 本地下载「完整资料包 .md」（把全文交给 WorkBuddy 自行读取）
+   深链只在装得下时带全文；装不下时用短指令发起并明确提示，绝不静默截断文件。 */
+const DEEP_SAFE_URL = 5800;   // 编码后 deeplink 长度警戒线（官方 6000，留余量）
+const matStore = Object.create(null);
+function matOf(p){
+  if (!matStore[p.name]) matStore[p.name] = { fields:{}, files:[] };
+  return matStore[p.name];
+}
+function matSize(n){ return n < 1024 ? n + ' B' : (n/1024).toFixed(1) + ' KB'; }
+function safeFileName(s){ return String(s).replace(/[\\\/:*?"<>|\r\n]/g, '_').slice(0, 40); }
+function materialPackName(p){
+  const d = new Date();
+  const stamp = d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0');
+  return '资料包_' + safeFileName(p.name) + '_' + stamp + '.md';
+}
+
+/* 读文件全文：raw 保存完整原始内容，kind 只是结构化描述，绝不对内容做摘要或截断 */
+function parseMaterial(file){
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onerror = () => resolve({ name:file.name, size:file.size, kind:'读取失败', raw:'' });
+    reader.onload = () => {
+      const raw = String(reader.result || '');
+      const ext = (file.name.split('.').pop() || '').toLowerCase();
+      let kind;
+      if (ext === 'csv' || ext === 'tsv') {
+        const delim = ext === 'tsv' ? '\t' : ',';
+        const lines = raw.split(/\r?\n/).filter(l => l.trim());
+        const head = lines[0] || '';
+        kind = 'CSV · ' + Math.max(0, lines.length - 1) + ' 行 · ' + head.split(delim).length + ' 列';
+      } else if (ext === 'json') {
+        let shape = 'JSON 解析失败';
+        try {
+          const j = JSON.parse(raw);
+          shape = Array.isArray(j) ? '数组 ' + j.length + ' 项'
+            : '对象，键: ' + Object.keys(j).slice(0, 12).join(', ');
+        } catch(e){}
+        kind = 'JSON · ' + shape;
+      } else {
+        kind = '文本 · ' + raw.split(/\r?\n/).length + ' 行';
+      }
+      resolve({ name:file.name, size:file.size, kind: kind + ' · 全文', raw });
+    };
+    reader.readAsText(file, 'utf-8');
+  });
+}
+
+function materialBits(p){
+  const m = matOf(p), bits = [];
+  const filled = (p.inputs || []).filter(l => (m.fields[l] || '').trim());
+  if (filled.length){
+    bits.push('【已填写资料 · 由网页表单提供】');
+    (p.inputs || []).forEach(l => {
+      const v = (m.fields[l] || '').trim();
+      if (v) bits.push('· ' + l + '：' + v);
+    });
+  }
+  if (m.files.length){
+    bits.push('');
+    bits.push('【网页上传的资料文件 · 以下为文件完整内容，未做摘要或截断，可直接用于本次分析】');
+    m.files.forEach((f, i) => {
+      bits.push('--- 文件 ' + (i+1) + ': ' + f.name + ' | ' + matSize(f.size) + ' | ' + f.kind + ' ---');
+      bits.push(f.raw || '（空文件）');
+    });
+  }
+  return bits;
+}
+
+/* 完整指令：含填写项 + 上传文件全文。零截断，用于复制 / 预览 / 下载 / 兜底。 */
+function buildPrompt(p){
+  const bits = materialBits(p);
+  return bits.length ? promptFor(p, bits.join('\n')) : promptFor(p);
+}
+
+/* 短指令：仅当完整指令超出深链承载上限时使用，明确告诉 WorkBuddy 去哪取完整资料 */
+function shortPrompt(p){
+  return [
+    '请用技能「' + p.name + '」完成任务，但【先不要开始分析】。',
+    '',
+    '本次所需的完整资料（含上传文件全文）体积较大，workbuddy:// 深链有长度上限，',
+    '无法随链接传入；网页没有对文件做摘要或截断。请用下面任一方式取得完整资料后再继续：',
+    '  1) 网页已把「完整调用指令（含全部文件全文）」复制到剪贴板，请直接粘贴到本对话；',
+    '  2) 或点网页里的「下载完整资料包」，把生成的 ' + materialPackName(p) + ' 放到当前工作目录，再告诉我文件名，我会自行读取。',
+    '',
+    '拿到完整资料前请勿基于空缺数据下结论；拿到后按「' + p.name + '」的要求给出可执行结果。',
+    '',
+    '技能目录：' + (p.installed_dir ? '~/.workbuddy/skills/' + p.installed_dir : p.rel),
+    '【任务说明】' + p.tagline
+  ].join('\n');
+}
+function deepLinkProbe(full){
+  const q = new URLSearchParams();
+  q.set('action','start'); q.set('prompt', full);
+  return 'workbuddy://task?' + q.toString();
+}
+
+/* 完整资料包：调用指令全文 + 每个上传文件的完整原始内容，UTF-8 BOM 保证 Windows 不乱码 */
+function materialPackText(p){
+  const m = matOf(p), L = [];
+  L.push('# 完整资料包 · ' + p.name);
+  L.push('');
+  L.push('> 由「亚马逊运营技能库」网页生成。本文件包含调用指令全文，以及上传文件的**完整原始内容**，未做任何摘要或截断。');
+  L.push('> 把本文件放到 WorkBuddy 当前工作目录，然后在对话里告诉它文件名即可；或直接把下面第一部分的调用指令粘贴发送。');
+  L.push('> 第一部分是「指令 + 文件全文」，第二部分是各文件的原始内容备份，两处内容重复属正常，方便你直接粘贴或让 WorkBuddy 读文件。');
+  L.push('');
+  L.push('## 一、调用指令（可直接粘贴发送）');
+  L.push('');
+  L.push('```text');
+  L.push(buildPrompt(p));
+  L.push('```');
+  L.push('');
+  L.push('## 二、上传文件全文');
+  L.push('');
+  if (!m.files.length) L.push('（本次未上传文件）');
+  m.files.forEach((f, i) => {
+    L.push('### ' + (i+1) + '. ' + f.name + ' · ' + matSize(f.size) + ' · ' + f.kind);
+    L.push('');
+    L.push('```text');
+    L.push(f.raw || '（空文件）');
+    L.push('```');
+    L.push('');
+  });
+  return L.join('\n');
+}
+function downloadMaterialPack(p){
+  if (!p) return;
+  const name = materialPackName(p);
+  const blob = new Blob(['\ufeff' + materialPackText(p)], { type:'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = name; a.style.display = 'none';
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ try { a.remove(); URL.revokeObjectURL(url); } catch(e){} }, 1500);
+  window.__lastDownloadName = name;
+  toast('已下载 ' + name + '（含文件全文）');
+}
+
+/* 容量条：让用户一眼看到「文件全文确实在指令里」以及深链是否装得下 */
+function updateMeter(p){
+  const el = $('#matMeter'); if (!el) return;
+  const full = buildPrompt(p);
+  const enc = deepLinkProbe(full).length;
+  const over = enc > DEEP_SAFE_URL || full.length > 7800;
+  const pct = Math.min(100, Math.round(enc / DEEP_SAFE_URL * 100));
+  el.className = 'mat-meter' + (over ? ' warn' : '');
+  el.innerHTML = '<span class="val">完整指令 ' + full.length.toLocaleString() + ' 字 · 深链约 ' + enc.toLocaleString() + ' 字符</span>'
+    + '<span class="bar"><i style="width:' + pct + '%"></i></span>'
+    + (over
+      ? '<span class="tag-warn">超出深链上限 → 用「复制调用指令」或「下载完整资料包」传全文</span>'
+      : '<span class="tag-ok">✓ 可直接一键发起（文件全文随链接传入）</span>');
+}
+
+function renderMatList(p){
+  const box = $('#matFilesList'), st = $('#matStatus');
+  if (!box) return;
+  const m = matOf(p);
+  box.innerHTML = m.files.map((f, i) =>
+    '<div class="mat-file"><span class="mf-name">' + esc(f.name) + '</span>'
+    + '<span class="mf-meta">' + esc(f.kind) + ' · ' + matSize(f.size) + '</span>'
+    + '<button class="mf-x" type="button" data-mat-del="' + i + '" aria-label="移除">×</button></div>').join('');
+  box.querySelectorAll('[data-mat-del]').forEach(b => {
+    b.onclick = () => { m.files.splice(+b.dataset.matDel, 1); refreshMaterials(p); };
+  });
+  const n = Object.keys(m.fields).filter(k => (m.fields[k] || '').trim()).length;
+  if (st) st.innerHTML = (n || m.files.length)
+    ? '<span class="ok">✓ 已附 ' + n + ' 项填写 · ' + m.files.length + ' 个文件（全文）</span><span>复制 / 下载 / 一键发起都会带上</span>'
+    : '<span>尚未填写或上传资料；直接发起会发送标准调用指令</span>';
+}
+function refreshMaterials(p){
+  renderMatList(p);
+  const ta = $('#promptTa'); if (ta) ta.value = buildPrompt(p);
+  updateMeter(p);
+}
+/* ===== 需要 CSV 的技能：详情内拖入即时预览（新增） =====
+   判定只看「需要准备(inputs)」清单，避免把只需 ASIN/链接的技能误标 */
+function needCsv(p){
+  const s = ((p.inputs || []).join(' ') + ' ' + (p.name || '')).toLowerCase();
+  return /csv|xlsx|报表|aba|sqp|周报|转化路径|report|excel|prompts|曝光份额/i.test(s);
+}
+/* 轻量 CSV/TSV 解析：支持引号转义、双引号、BOM、CRLF */
+function csvQuickParse(text){
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+  const first = (text.split(/\r?\n/).find(l => l.trim()) || '');
+  const delim = first.split('\t').length > first.split(',').length ? '\t' : ',';
+  const rows = []; let field = '', row = [], inQ = false;
+  for (let i = 0, n = text.length; i < n; i++){
+    const c = text[i];
+    if (inQ){
+      if (c === '"'){ if (text[i+1] === '"'){ field += '"'; i++; continue; } inQ = false; continue; }
+      field += c; continue;
+    }
+    if (c === '"'){ inQ = true; continue; }
+    if (c === delim){ row.push(field); field = ''; continue; }
+    if (c === '\r') continue;
+    if (c === '\n'){ row.push(field); rows.push(row); row = []; field = ''; continue; }
+    field += c;
+  }
+  if (field.length || row.length){ row.push(field); rows.push(row); }
+  while (rows.length && rows[rows.length-1].length === 1 && rows[rows.length-1][0] === '') rows.pop();
+  return { headers: rows.shift() || [], rows: rows };
+}
+function csvPreviewHtml(f){
+  const d = csvQuickParse(f.raw || '');
+  const cols = d.headers, show = cols.slice(0, 10);
+  let h = '<div class="cpv-card"><div class="cpv-hd">📄 ' + esc(f.name)
+        + ' · <b>' + d.rows.length + '</b> 行 · <b>' + cols.length + '</b> 列'
+        + '<span class="cpv-tag">即时预览 · 全文已带入调用指令</span></div>';
+  h += '<div class="cpv-scroll"><table><thead><tr>'
+     + show.map(c => '<th>' + esc(c) + '</th>').join('')
+     + (cols.length > 10 ? '<th>…</th>' : '') + '</tr></thead><tbody>';
+  h += d.rows.slice(0, 8).map(r => '<tr>'
+     + show.map((_, i) => '<td>' + esc(r[i] || '') + '</td>').join('')
+     + (cols.length > 10 ? '<td>…</td>' : '') + '</tr>').join('');
+  h += '</tbody></table></div>';
+  h += '<div class="cpv-ft">仅预览前 8 行 / 前 10 列；点底部「直接发起对话」或「复制调用指令」，即可把文件全文交给 WorkBuddy 运行本技能，无需再复制文件地址。</div></div>';
+  return h;
+}
+
+function materialsSection(p){
+  const m = matOf(p);
+  let h = '<div class="mat-box">';
+  h += '<p class="mat-lead">填好资料或上传文件后，<b>文件完整内容</b>（不是摘要）会写进调用指令，底部「复制调用指令」「直接发起对话」和「下载完整资料包」都会带上。文件只在浏览器本地读取，不上传任何服务器。</p>';
+  (p.inputs || []).forEach((label, i) => {
+    const v = m.fields[label] || '';
+    const long = /报表|CSV|报告|说明|备注|清单|内容|文本|周报|数据/i.test(label);
+    h += '<div class="mat-field"><label for="matF' + i + '">' + esc(label) + '</label>';
+    h += long
+      ? '<textarea id="matF' + i + '" data-mat-field="' + esc(label) + '" rows="2" placeholder="粘贴或填写…">' + esc(v) + '</textarea>'
+      : '<input id="matF' + i + '" data-mat-field="' + esc(label) + '" type="text" value="' + esc(v) + '" placeholder="填写…">';
+    h += '</div>';
+  });
+  if (typeof needCsv === 'function' && needCsv(p)){
+    h += '<div class="cpv-tip">📥 <b>本技能需要 CSV / 报表</b>：把文件拖到下面或点选，会<b>即时预览</b>表头与前几行，文件<b>全文自动带入调用指令</b>（复制 / 直接发起对话 / 下载资料包都会带上），无需再复制文件地址。</div>';
+    h += '<div id="csvPvBox"></div>';
+  }
+  h += '<label class="mat-drop" id="matDrop" for="matFiles"><b>点击选择文件，或拖到这里</b>'
+     + '<span>支持 .csv / .tsv / .txt / .md / .json，可多选；读取文件完整内容，不再截取摘要</span>'
+     + '<input type="file" id="matFiles" multiple accept=".csv,.tsv,.txt,.md,.json,.log"></label>';
+  h += '<div class="mat-files" id="matFilesList"></div>';
+  h += '<div class="mat-status" id="matStatus"></div>';
+  h += '<div class="mat-meter" id="matMeter"></div>';
+  h += '<div class="mat-actions"><button class="btn sm" type="button" id="matClear">清空资料</button>'
+     + '<button class="btn sm" type="button" id="matPreview">预览带资料的指令</button>'
+     + '<button class="btn sm pri" type="button" id="matDownload">下载完整资料包</button></div>';
+  h += '<p class="mat-hint">提示：ABA / 广告报表类请上传含表头的 CSV；中文 Excel 建议先「另存为 CSV UTF-8」。'
+     + 'workbuddy:// 深链有长度上限（约 6000 字符），装不下全部资料时请用「复制调用指令」或「下载完整资料包」——这两条通道传的是文件全文，不受限制。</p>';
+  h += '</div>';
+  return h;
+}
+async function addMaterialFiles(p, fileList){
+  const files = Array.from(fileList || []);
+  if (!files.length) return;
+  for (const f of files) matOf(p).files.push(await parseMaterial(f));
+  refreshMaterials(p);
+  // 需要 CSV 的技能：拖入后即时预览（列名/行数/前几行）；全文照常带入调用指令
+  try {
+    const box = $('#csvPvBox');
+    if (box && typeof needCsv === 'function' && needCsv(p)){
+      const m = matOf(p);
+      let html = '';
+      files.filter(f => /\.(csv|tsv|txt)$/i.test(f.name)).forEach(f => {
+        const rec = m.files.filter(x => x.name === f.name).slice(-1)[0];
+        if (rec && rec.raw) html += csvPreviewHtml(rec);
+      });
+      if (html) box.innerHTML = html;
+    }
+  } catch (e) {}
+  toast('已读取 ' + files.length + ' 个文件');
+}
+
+/* ---------- 直接发起 WorkBuddy 对话（免复制） ----------
+   用 workbuddy:// 自定义协议唤起一个新的 WorkBuddy 任务，把技能名和调用指令
+   一并带过去。必须用「用户手势 + 顶层 <a target="_blank">」触发：iframe 内的
+   外部协议会被 Chrome 静默拦截（现象是只把主窗口前置，却不新建任务）。
+   深链有长度上限：装得下就带文件全文；装不下则用短指令发起，完整内容走剪贴板 + 资料包下载。
+   2 秒内未唤起（未注册协议 / 预览沙箱拦截）则自动复制指令并弹窗兜底。 */
+function launchWorkBuddy(p, promptOverride){
+  if (!p) return;
+  const full = promptOverride || buildPrompt(p);   // 完整指令，含上传文件全文
+  const q = new URLSearchParams();
+  q.set('action', 'start');
+  q.set('prompt', full);
+  // 官方 skills 只接受 ASCII 技能 ID（逗号分隔）；中文技能名传过去会导致预加载失败，干脆不传
+  const skillId = p.name_en || p.installed_dir || '';
+  if (skillId && /^[A-Za-z0-9._-]+$/.test(skillId)) q.set('skills', skillId);
+  let url = 'workbuddy://task?' + q.toString();
+
+  // 官方限制：deeplink 总长 > 6000 在 Windows 命令行可能唤起失败；prompt > 8000 会被解析时截断。
+  // 装不下时绝不静默截断文件：改用短指令发起，完整内容走剪贴板 + 可下载资料包。
+  const oversize = url.length > DEEP_SAFE_URL || full.length > 7800;
+  if (oversize){
+    q.set('prompt', shortPrompt(p));
+    url = 'workbuddy://task?' + q.toString();
+  }
+
+  // 关键：外部协议必须由「用户手势 + 顶层导航」触发。
+  // 隐藏 iframe 里的 src 会被 Chrome 按第三方外部协议直接拦截（静默失败），
+  // 表现为浏览器弹了确认框、WorkBuddy 只把主窗口前置，却不新建任务。
+  // 用带 target=_blank 的 <a> 在点击回调里 click()，既保留用户手势，又不会替换当前页。
+  const a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { try { a.remove(); } catch (e) {} }, 1200);
+
+  window.__lastDeepLink = url;
+  window.__deepLinkOversize = oversize;
+  window.__deepLinkFullPrompt = full;
+
+  if (oversize){
+    // 完整指令走剪贴板（无长度上限），并弹窗提供「下载完整资料包」
+    copy(full, '完整指令已复制（含文件全文）');
+    showLaunchFallback(full, url, { oversize:true, pack:p });
+    return;
+  }
+
+  toast('正在唤起 WorkBuddy 新任务…');
+  // 2 秒内若页面未失焦（协议没被接管），自动复制指令并弹窗说明，避免“点了没反应”
+  let launched = false;
+  const onHide = () => { launched = true; };
+  window.addEventListener('blur', onHide, { once: true });
+  document.addEventListener('visibilitychange', onHide, { once: true });
+  setTimeout(() => {
+    window.removeEventListener('blur', onHide);
+    document.removeEventListener('visibilitychange', onHide);
+    if (!launched) showLaunchFallback(full, url);
+  }, 2000);
+}
+
+const LM_SUB_NORMAL = '当前环境未能把深链交给桌面端（内置预览面板会拦截 <code>workbuddy://</code>；普通浏览器则需在弹窗里点「打开」）。调用指令已自动复制到剪贴板，按下面三步即可继续：';
+const LM_STEPS_NORMAL = '<li>打开 WorkBuddy 桌面端，新建一个对话</li>'
+  + '<li>把下面已复制的指令直接粘贴发送</li>'
+  + '<li>想验证深链本身是否可用：复制下方深链，按 <b>Win + R</b> 粘贴回车</li>';
+const LM_SUB_OVER = '本次资料（含上传文件全文）体积较大，<code>workbuddy://</code> 深链有长度上限，<b>完整文件不能塞进链接</b>——网页没有对文件做摘要或截断。任务已用短指令发起，完整内容改由下面两条无损通道交付：';
+const LM_STEPS_OVER = '<li>网页已把<b>含全部文件全文的完整调用指令</b>复制到剪贴板，请在 WorkBuddy 里直接粘贴发送</li>'
+  + '<li>或点「下载完整资料包」，把生成的 .md 放到工作目录，再告诉 WorkBuddy 文件名由它自行读取</li>'
+  + '<li>拿到完整资料前，短指令已要求它不要基于空缺数据下结论</li>';
+
+function showLaunchFallback(promptText, deepLink, opts){
+  opts = opts || {};
+  const over = !!opts.oversize;
+  $('#lmHead').textContent = over ? '资料较长 · 完整文件已用无损通道交付' : '未能自动唤起 WorkBuddy';
+  $('#lmSub').innerHTML = over ? LM_SUB_OVER : LM_SUB_NORMAL;
+  $('#lmSteps').innerHTML = over ? LM_STEPS_OVER : LM_STEPS_NORMAL;
+  $('#lmTa').value = promptText || '';
+  $('#lmLink').value = deepLink || window.__lastDeepLink || '';
+  $('#lmDownload').style.display = over ? '' : 'none';
+  $('#lmCopy').textContent = over ? '复制完整指令' : '复制指令';
+  window.__fallbackPack = opts.pack || state.current || window.__fallbackPack;
+  $('#launchFallback').classList.add('on');
+  // 超限分支已在 launchWorkBuddy 里复制过完整指令，这里不重复复制
+  if (!over) copy(promptText || '', '调用指令已复制');
+}
+function hideLaunchFallback(){ $('#launchFallback').classList.remove('on'); }
+
+/* ---------- 列表 ---------- */
+function haystack(p){
+  return [p.name, p.tagline, p.cat, p.about, p.name_en, p.installed_dir, p.rel,
+    (p.tags||[]).join(' '), (p.inputs||[]).join(' '),
+    (p.outputs_list||[]).join(' '), p.usage].join(' ').toLowerCase();
+}
+function visible(){
+  const words = state.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  return packs.filter(p => {
+    if (state.cat !== '全部' && p.cat !== state.cat) return false;
+    if (state.installedOnly && !p.installed) return false;
+    if (words.length){
+      const h = haystack(p);
+      if (!words.every(w => h.includes(w))) return false;
+    }
+    return true;
+  });
+}
+function badge(p){
+  if (p.installed) return '<span class="badge installed">已装本机</span>';
+  if (p.has_run || (p.scripts||[]).length) return '<span class="badge script">含脚本</span>';
+  return '<span class="badge plain">提示词</span>';
+}
+function card(p, i){
+  const io = (label, arr) => arr && arr.length
+    ? '<div><span class="io-k">'+label+'</span><span class="io-v">'+esc(arr.join(' · '))+'</span></div>' : '';
+  const tags = (p.tags||[]).slice(0,4).map(t=>'<span class="tag">'+esc(t)+'</span>').join('');
+  return '<article class="card" tabindex="0" data-id="'+i+'" style="--c:'+color(p.cat)+'">'
+    + '<div class="card-top"><h3>'+esc(p.name)+'</h3>'+badge(p)+'</div>'
+    + '<p class="tagline">'+esc(p.tagline)+'</p>'
+    + '<div class="io">'+io('输入',p.inputs)+io('产出',p.outputs_list)+'</div>'
+    + '<div class="tags">'+tags+'</div>'
+    + '<div class="card-foot"><span>'+
+        ((p.scripts||[]).length ? p.scripts.length+' 个脚本' : '纯文档') + ' · ' + p.size_kb + ' KB</span>'
+    + '<span class="go">查看详情 →</span></div>'
+    + '</article>';
+}
+function render(){
+  const list = visible();
+  const counts = {}; cats.forEach(c => counts[c] = list.filter(p=>p.cat===c).length);
+  $('#chips').innerHTML = ['全部'].concat(cats).map(c=>{
+    const n = c==='全部' ? list.length : (counts[c]||0);
+    return '<button class="chip'+(state.cat===c?' on':'')+'" data-cat="'+esc(c)+'">'
+      + esc(c) + '<span class="n">'+n+'</span></button>';
+  }).join('');
+
+  if (!list.length){
+    $('#main').innerHTML = '<div class="empty"><b>没有匹配的技能</b>换个关键词，或取消「仅看本机已装」</div>';
+    return;
+  }
+  $('#main').innerHTML = cats.map(c=>{
+    const group = list.filter(p=>p.cat===c);
+    if (!group.length) return '';
+    return '<section class="group"><div class="group-head" style="--c:'+color(c)+'">'
+      + '<span class="dot"></span><h2>'+esc(c)+'</h2><span class="count">'+group.length+'</span></div>'
+      + '<div class="grid">'+group.map(p=>card(p, packs.indexOf(p))).join('')+'</div></section>';
+  }).join('');
+}
+
+/* ---------- 抽屉 ---------- */
+function section(title, body){
+  return '<div class="sec"><h4>'+esc(title)+'</h4>'+body+'</div>';
+}
+function liList(arr){
+  return '<ul class="list">'+(arr||[]).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
+}
+function openDrawer(i){
+  const p = packs[i]; if (!p) return;
+  state.current = p;
+  const c = color(p.cat);
+  $('#drawerHead').innerHTML =
+    '<div class="cat" style="--c:'+c+'">'+esc(p.cat)+'</div>'
+    + '<h2>'+esc(p.name)+'</h2><p class="sub">'+esc(p.tagline)+'</p>'
+    + '<div class="badges">'+badge(p)
+    + (p.has_skill_md?'<span class="badge plain">SKILL.md</span>':'')
+    + (p.has_readme?'<span class="badge plain">README</span>':'')
+    + (p.has_run?'<span class="badge script">run.py</span>':'')
+    + (p.embedded?'<span class="badge plain">内嵌包</span>':'')
+    + '</div><button class="close" id="xClose" aria-label="关闭">×</button>';
+
+  let h = '';
+    if (p.note) h += '<div class="sec"><div class="note">'+esc(p.note)+'</div></div>';
+  if (p.about) h += section('这个技能解决什么', '<p>'+esc(p.about)+'</p>');
+  if ((p.inputs||[]).length) h += section('需要准备', liList(p.inputs));
+  h += section('准备资料 · 填写 / 上传后直接调用', materialsSection(p));
+  if ((p.outputs_list||[]).length) h += section('会拿到什么', liList(p.outputs_list));
+  if (p.outputs && p.outputs.length > 30 && !(p.outputs_list||[]).length)
+    h += section('产出说明', '<p>'+esc(p.outputs)+'</p>');
+
+  h += section('调用指令 · 点“直接发起对话”或粘贴到 WorkBuddy',
+    '<div class="copybox"><textarea id="promptTa" readonly spellcheck="false"></textarea>'
+    + '<button class="copybtn" data-copy="prompt">复制</button></div>');
+
+  $('#drawerBody').innerHTML = h;
+  $('#drawerBody').scrollTop = 0;
+  $('#overlay').classList.add('on');
+  $('#drawer').classList.add('on');
+  document.body.style.overflow = 'hidden';
+  $('#xClose').onclick = closeDrawer;
+  const m = matOf(p);
+  $('#drawerBody').querySelectorAll('[data-mat-field]').forEach(el=>{
+    el.addEventListener('input', ()=>{ m.fields[el.dataset.matField] = el.value; refreshMaterials(p); });
+  });
+  const fi = $('#matFiles');
+  if (fi) fi.addEventListener('change', e=>{
+    const fl = Array.from(e.target.files || []);
+    addMaterialFiles(p, fl); fi.value = '';
+  });
+  const drop = $('#matDrop');
+  if (drop){
+    drop.addEventListener('dragover', e=>{ e.preventDefault(); drop.classList.add('over'); });
+    drop.addEventListener('dragleave', ()=> drop.classList.remove('over'));
+    drop.addEventListener('drop', e=>{
+      e.preventDefault(); drop.classList.remove('over');
+      addMaterialFiles(p, Array.from((e.dataTransfer && e.dataTransfer.files) || []));
+    });
+  }
+  const clr = $('#matClear');
+  if (clr) clr.onclick = ()=>{
+    m.fields = {}; m.files = [];
+    $('#drawerBody').querySelectorAll('[data-mat-field]').forEach(el=> el.value = '');
+    refreshMaterials(p); toast('资料已清空');
+  };
+  const pv = $('#matPreview');
+  if (pv) pv.onclick = ()=>{
+    refreshMaterials(p);
+    const ta = $('#promptTa');
+    if (ta) ta.scrollIntoView({ block:'nearest', behavior:'smooth' });
+    toast('已更新调用指令预览');
+  };
+  const dl = $('#matDownload');
+  if (dl) dl.onclick = ()=> downloadMaterialPack(p);
+  refreshMaterials(p);
+  $('#drawerBody').querySelectorAll('[data-copy]').forEach(b=>{
+    b.onclick = () => {
+      const text = $('#promptTa').value;
+      copy(text, '已复制'); b.textContent = '已复制 ✓'; b.classList.add('ok');
+      setTimeout(()=>{ b.textContent='复制'; b.classList.remove('ok'); }, 1600);
+    };
+  });
+  try { location.hash = 'skill-' + i; } catch(e){}
+}
+function closeDrawer(){
+  $('#overlay').classList.remove('on'); $('#drawer').classList.remove('on');
+  document.body.style.overflow = ''; state.current = null;
+  try { history.replaceState(null,'',location.pathname + location.search); } catch(e){}
+}
+
+/* 有内置工具的卡片直接开工具，其余仍开详情抽屉 */
+function activate(i){
+  const p = packs[i]; if (!p) return;
+  openDrawer(i);
+}
+// 工具模块（同一页面的第二段脚本）通过这些入口复用复制与抽屉
+window.__copy = copy;
+window.__toast = toast;
+window.__openSkillByName = function(name){
+  const i = packs.findIndex(p => p.name === name);
+  if (i >= 0) openDrawer(i);
+  return i >= 0;
+};
+
+/* ---------- 初始化 ---------- */
+function init(){
+  // 未注入数据时（误双击源码模板）保留页面上的防呆提示，不白屏、不报错
+  if (!DATA || !Array.isArray(DATA.packs)) return;
+  $('#title').textContent = DATA.title;
+  $('#subtitle').textContent = '从 ' + DATA.source + ' 整理 · 可搜索 / 可复制 / 可直接调用';
+  const nInstalled = packs.filter(p=>p.installed).length;
+  const nScript = packs.filter(p=>(p.scripts||[]).length).length;
+  $('#stats').innerHTML = [
+    [packs.length,'技能'], [cats.length,'分类'], [nInstalled,'本机已装'], [nScript,'含脚本']
+  ].map(x=>'<div class="stat"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('');
+  render();
+
+  $('#q').addEventListener('input', e=>{ state.q = e.target.value; render(); });
+  $('#chips').addEventListener('click', e=>{
+    const b = e.target.closest('.chip'); if (!b) return;
+    state.cat = b.dataset.cat; render();
+  });
+  $('#onlyInstalled').addEventListener('change', e=>{ state.installedOnly = e.target.checked; render(); });
+  $('#main').addEventListener('click', e=>{
+    const c = e.target.closest('.card'); if (c) activate(+c.dataset.id);
+  });
+  $('#main').addEventListener('keydown', e=>{
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const c = e.target.closest('.card'); if (c){ e.preventDefault(); activate(+c.dataset.id); }
+  });
+  $('#overlay').onclick = closeDrawer;
+  $('#closeBtn').onclick = closeDrawer;
+  $('#launchBtn').onclick = ()=>{
+    if (!state.current){ toast('请先选择一个技能'); return; }
+    launchWorkBuddy(state.current, buildPrompt(state.current));
+  };
+  $('#lmCopy').onclick = () => copy($('#lmTa').value, '完整指令已复制');
+  $('#lmCopyLink').onclick = () => copy($('#lmLink').value, '深链已复制，可粘贴到「运行」');
+  $('#lmDownload').onclick = () => {
+    const p = window.__fallbackPack || state.current;
+    if (p) downloadMaterialPack(p); else toast('请先选择一个技能');
+  };
+  $('#lmClose').onclick = hideLaunchFallback;
+  $('#launchFallback').addEventListener('click', e=>{ if (e.target.id === 'launchFallback') hideLaunchFallback(); });
+  $('#copyPrompt').onclick = ()=> state.current && copy(buildPrompt(state.current), '调用指令已复制');
+  $('#copyCmd').onclick = ()=>{
+    if (!state.current) return;
+    const t = state.current.usage;
+    if (!t){ toast('这个技能没有命令行用法'); return; }
+    copy(t, '命令已复制');
+  };
+  document.addEventListener('keydown', e=>{
+    if (e.key === 'Escape'){
+      if ($('#launchFallback').classList.contains('on')){ hideLaunchFallback(); return; }
+      closeDrawer();
+    }
+    const tag = (document.activeElement && document.activeElement.tagName || '').toLowerCase();
+    const typing = tag === 'input' || tag === 'textarea' || tag === 'select';
+    if (e.key === '/' && !typing && document.activeElement !== $('#q')){
+      e.preventDefault(); $('#q').focus();
+    }
+  });
+  const m = /^#skill-(\d+)$/.exec(location.hash);
+  if (m) openDrawer(+m[1]);
+}
+init();
+</script>
+</body>
+</html>
